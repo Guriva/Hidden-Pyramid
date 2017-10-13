@@ -20,7 +20,7 @@ class Entity {
 
 public:
 	Entity(const char* name, const char* description);
-	~Entity();
+	virtual ~Entity();
 	virtual void Update();
 	virtual void Look() const;
 	EType GetType() const;
