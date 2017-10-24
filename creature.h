@@ -10,7 +10,7 @@ class Creature : public Entity {
 public:
 	Creature(const char* name, const char* description, Room* room);
 	~Creature();
-	void Look() const;
+	void look() const;
 	Room* GetRoom() const;
 	int GetHealth() const;
 
@@ -19,4 +19,4 @@ protected:
 	int healthPoints;
 };
 
-#endif __Creature__
+#endif //__Creature__

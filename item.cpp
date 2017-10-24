@@ -9,7 +9,7 @@ Item::Item(const char* name, const char* description, Entity* entity) :
 Item::~Item() {
 
 }
-void Item::Look() const {
+void Item::look() const {
 
 }
 

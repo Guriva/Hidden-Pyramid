@@ -10,6 +10,6 @@ Player::Player(const char* name, const char* description, Room* room) :
 Player::~Player() {
 
 }
-void Player::Look() const {
+void Player::look() const {
 
 }

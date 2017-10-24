@@ -10,7 +10,7 @@ Exit::~Exit() {
 
 }
 
-void Exit::Look() const {
+void Exit::look() const {
 
 }
 

@@ -11,6 +11,6 @@ Puzzle::Puzzle(const char* name, const char* description) :
 Puzzle::~Puzzle() {
 
 }
-void Puzzle::Look() const {
+void Puzzle::look() const {
 
 }

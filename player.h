@@ -10,10 +10,10 @@ class Player : public Creature {
 public:
 	Player(const char* name, const char* description, Room* room);
 	~Player();
-	void Look() const;
+	void look() const;
 
 private:
 
 };
 
-#endif __Player__
+#endif //__Player__

@@ -22,7 +22,7 @@ public:
 	Entity(const char* name, const char* description);
 	virtual ~Entity();
 	virtual void Update();
-	virtual void Look() const;
+	virtual void look() const = 0;
 	EType GetType() const;
 	string GetName() const;
 	string GetDescription() const;
@@ -34,4 +34,4 @@ protected:
 	list<Entity*> entitiesInside;		//(Possible change to vector, depending on the future use)
 };
 
-#endif __Entity__
+#endif //__Entity__

@@ -16,7 +16,7 @@ class Exit : public Entity{
 public:
 	Exit(const char* name, const char* description, Room* source, Room* destination, const direction dir);
 	~Exit();
-	void Look() const;
+	void look() const;
 	Room* GetSource() const;
 	Room* GetDestination() const;
 	direction GetDirection() const;
@@ -27,4 +27,4 @@ private:
 	direction dir;
 };
 
-#endif __Exit__
+#endif //__Exit__

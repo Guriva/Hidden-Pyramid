@@ -12,7 +12,7 @@ Creature::~Creature() {
 
 }
 
-void Creature::Look() const {
+void Creature::look() const {
 
 }
 

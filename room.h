@@ -8,9 +8,9 @@ class Room : public Entity {
 public:
 	Room(const char* name, const char* description);
 	~Room();
-	void Look();
+	void look() const;
 
 private:
 };
 
-#endif __Room__
+#endif //__Room__

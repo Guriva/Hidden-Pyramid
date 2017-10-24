@@ -8,11 +8,11 @@ class Item : public Entity {
 public:
 	Item(const char* name, const char* description, Entity* entity);
 	~Item();
-	void Look() const;
+	void look() const;
 	Entity* GetParent() const;
 
 private:
 	Entity* entityContainedIn;
 };
 
-#endif __Item__
+#endif //__Item__

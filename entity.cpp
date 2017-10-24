@@ -1,3 +1,4 @@
+#include <iostream>
 #include "entity.h"
 
 Entity::Entity(const char* name, const char* description) :
@@ -11,10 +12,6 @@ Entity::~Entity() {
 }
 
 void Entity::Update() {
-
-}
-
-void Entity::Look() const {
 
 }
 
