@@ -10,7 +10,9 @@ class Player : public Creature {
 public:
 	Player(const char* name, const char* description, Room* room);
 	~Player();
-	void look() const;
+	void Update();
+	bool look(const vector<string>& args) const override;
+	void move(const vector<string>& args) override;
 
 private:
 

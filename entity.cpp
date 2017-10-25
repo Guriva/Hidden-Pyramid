@@ -1,8 +1,11 @@
 #include <iostream>
 #include "entity.h"
 
-Entity::Entity(const char* name, const char* description) :
-	name(name),description(description) {
+Entity::Entity(const char* name, const char* description, Entity* parent) :
+	name(name),description(description),parent(parent) {
+
+	if (parent != nullptr)
+		parent->entitiesInside.push_back(this);
 
 	type = ENTITY;
 }
@@ -15,15 +18,7 @@ void Entity::Update() {
 
 }
 
-EType Entity::GetType() const {
-	return type;
+void Entity::look() const {
+	cout << "You see " << name << endl;
+	cout << description << endl;
 }
-
-string Entity::GetName() const {
-	return name;
-}
-
-string Entity::GetDescription() const {
-	return description;
-}
-

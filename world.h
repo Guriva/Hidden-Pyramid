@@ -19,7 +19,7 @@ public:
 	bool getInput(const vector<string>& args);
 private:
 	vector<Entity*> entities;
-	Player* player;
+	Player* player = nullptr;
 };
 
 #endif //__World__

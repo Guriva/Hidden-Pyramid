@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include <vector>
 
 using namespace std;
 
@@ -19,19 +20,17 @@ enum EType {
 class Entity {
 
 public:
-	Entity(const char* name, const char* description);
+	Entity(const char* name, const char* description, Entity* parent);
 	virtual ~Entity();
 	virtual void Update();
-	virtual void look() const = 0;
-	EType GetType() const;
-	string GetName() const;
-	string GetDescription() const;
+	virtual void look() const;
 
-protected:
+public:
 	EType type;
 	string name;
 	string description;
 	list<Entity*> entitiesInside;		//(Possible change to vector, depending on the future use)
+	Entity* parent = nullptr;
 };
 
 #endif //__Entity__

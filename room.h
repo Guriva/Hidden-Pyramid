@@ -8,7 +8,10 @@ class Room : public Entity {
 public:
 	Room(const char* name, const char* description);
 	~Room();
-	void look() const;
+	void look() const override;
+
+private:
+	void lookThing(const Entity* entity) const;
 
 private:
 };

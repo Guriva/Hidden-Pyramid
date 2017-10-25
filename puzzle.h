@@ -8,12 +8,12 @@ class Room;
 class Puzzle : public Entity {
 
 public:
-	Puzzle(const char* name, const char* description);
+	Puzzle(const char* name, const char* description, Room* room);
 	~Puzzle();
-	void look() const;
+	void look() const override;
+	bool isSolved() const;
 
 private:
-	Room* room;
 	bool solved;
 };
 

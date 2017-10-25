@@ -3,16 +3,29 @@
 
 #include "entity.h"
 
+class Puzzle;
+
+enum IType {
+	WEAPON,
+	USABLE,
+	CONTAINER,
+
+};
+
 class Item : public Entity {
 
 public:
-	Item(const char* name, const char* description, Entity* entity);
+	Item(const char* name, const char* description, Entity* entity, const bool carriable = true, Entity* key = nullptr, Puzzle* puzzle = nullptr);
 	~Item();
-	void look() const;
-	Entity* GetParent() const;
+	void look() const override;
+	Entity* containedIn() const;
+	bool isLocked() const;
 
 private:
-	Entity* entityContainedIn;
+	bool locked;
+	bool carriable;
+	Entity* key;
+	Puzzle* puzzle;
 };
 
 #endif //__Item__

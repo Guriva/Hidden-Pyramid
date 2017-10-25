@@ -4,27 +4,25 @@
 #include "entity.h"
 
 class Room;
-
-enum direction {
-	ORIGIN,
-	DESTINATION,
-	BOTH
-};
+class Puzzle;
 
 class Exit : public Entity{
 
 public:
-	Exit(const char* name, const char* description, Room* source, Room* destination, const direction dir);
+	Exit(const char* name, const char* secondRoomExit, const char* description, const char* secondDescr, Room* source, Room* destination, Entity* key = nullptr, Puzzle* puzzle = nullptr);
 	~Exit();
-	void look() const;
-	Room* GetSource() const;
-	Room* GetDestination() const;
-	direction GetDirection() const;
+	void look(const Room* room) const;
+	Room* getSource() const;
+	Room* getDestination() const;
+	string getSecondDescr() const;
 	
-private:
-	Room* source;
-	Room* destination;
-	direction dir;
+protected:
+	bool closed;
+	string secondRoomExit;
+	string secondDescription;
+	Room* destination = nullptr;
+	Entity* key;
+	Puzzle* puzzle;
 };
 
 #endif //__Exit__
