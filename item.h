@@ -9,13 +9,14 @@ enum IType {
 	WEAPON,
 	USABLE,
 	CONTAINER,
-
+	MOVABLE,
+	STATIC
 };
 
 class Item : public Entity {
 
 public:
-	Item(const char* name, const char* description, Entity* entity, const bool carriable = true, Entity* key = nullptr, Puzzle* puzzle = nullptr);
+	Item(const char* name, const char* description, Entity* entity, Entity* key, Puzzle* puzzle, IType itemType, const bool carriable = true);
 	~Item();
 	void look() const override;
 	Entity* containedIn() const;
@@ -24,8 +25,9 @@ public:
 private:
 	bool locked;
 	bool carriable;
-	Entity* key;
-	Puzzle* puzzle;
+	IType itemType;
+	Entity* key = nullptr;
+	Puzzle* puzzle = nullptr;
 };
 
 #endif //__Item__

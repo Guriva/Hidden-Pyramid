@@ -3,8 +3,8 @@
 #include "puzzle.h"
 #include "creature.h"
 
-Item::Item(const char* name, const char* description, Entity* entity, const bool carriable, Entity* key, Puzzle* puzzle) :
-	Entity(name,description, (Entity*)entity), key(key), puzzle(puzzle), locked(false), carriable(carriable) {
+Item::Item(const char* name, const char* description, Entity* entity, Entity* key, Puzzle* puzzle, IType itemType, const bool carriable) :
+	Entity(name,description, (Entity*)entity), key(key), puzzle(puzzle), locked(false), itemType(itemType), carriable(carriable) {
 
 	type = ITEM;
 	if (key != nullptr || (puzzle != nullptr && !puzzle->isSolved())) {
@@ -20,8 +20,8 @@ void Item::look() const {
 	cout << "You see a " << name << endl;
 	cout << description << endl;
 
-	if (locked) {
-		cout << "It may contains something inside, but it is locked" << endl;
+	if (itemType == CONTAINER) {
+		cout << "It may contains something inside" << endl;
 	}
 
 	/*This below needs to go when an item can be opened and it's opened*/

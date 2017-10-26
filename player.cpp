@@ -64,6 +64,42 @@ bool Player::look(const vector<string>& args) const {
 	return false;
 }
 
-void Player::move(const vector<string>& args) {
+bool Player::move(const vector<string>& args) {
+	return false;
+}
 
+bool Player::use(const vector<string>& args) {
+	return false;
+}
+
+bool Player::attack(const vector<string>& args) {
+	return false;
+}
+
+bool Player::drop(const vector<string>& args) {
+	return false;
+}
+
+bool Player::take(const vector<string>& args) {
+	return false;
+}
+
+bool Player::put(const vector<string>& args) {
+	return false;
+}
+
+bool Player::unlock(const vector<string>& args) {
+	return false;
+}
+
+void Player::status() const {
+
+}
+
+void Player::inventory() const {
+
+}
+
+bool Player::examine(const vector<string>& args) const {
+	return false;
 }

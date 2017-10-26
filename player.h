@@ -12,7 +12,16 @@ public:
 	~Player();
 	void Update();
 	bool look(const vector<string>& args) const override;
-	void move(const vector<string>& args) override;
+	bool move(const vector<string>& args);
+	bool use(const vector<string>& args);
+	bool attack(const vector<string>& args);
+	bool drop(const vector<string>& args);
+	bool take(const vector<string>& args);
+	bool put(const vector<string>& args);
+	bool unlock(const vector<string>& args);
+	void status() const;
+	void inventory() const;
+	bool examine(const vector<string>& args) const;
 
 private:
 

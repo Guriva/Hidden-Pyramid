@@ -4,11 +4,12 @@
 #include "puzzle.h"
 #include "globals.h"
 
-Exit::Exit(const char* name, const char* secondRoomExit, const char* description,const char* secondDescr, Room* source, Room* destination, Entity* key, Puzzle* puzzle) :
-	Entity(name, description, (Entity*)source), destination(destination), secondRoomExit(secondRoomExit), secondDescription(secondDescr), key(key), puzzle(puzzle), closed(false) {
+Exit::Exit(const char* name, const char* secondRoomExit, const char* description,const char* secondDescr, Room* source, Room* destination, exitData eData) :
+	Entity(name, description, (Entity*)source), destination(destination), secondRoomExit(secondRoomExit),
+	secondDescription(secondDescr), key(eData.key), puzzle(eData.puzzle), closed(false), onlyPassOnce(eData.onlyPassOnce) {
 
 	type = EXIT;
-	if (destination != nullptr) {
+	if (destination != nullptr && !eData.ignoreDestination) {
 		destination->entitiesInside.push_back(this);
 	}
 
@@ -17,6 +18,10 @@ Exit::Exit(const char* name, const char* secondRoomExit, const char* description
 	}
 }
 Exit::~Exit() {
+
+}
+
+void Exit::Update() {
 
 }
 

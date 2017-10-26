@@ -12,7 +12,15 @@ public:
 	~Creature();
 	virtual void Update();
 	virtual bool look(const vector<string>& args) const;
-	virtual void move(const vector<string>& args);
+	virtual bool move(const vector<string>& args);
+	virtual bool use(const vector<string>& args);
+	virtual bool attack(const vector<string>& args);
+	virtual bool drop(const vector<string>& args);
+	virtual bool take(const vector<string>& args);
+	virtual bool put(const vector<string>& args);
+	virtual bool unlock(const vector<string>& args);
+	virtual void status() const;
+	virtual void inventory() const;
 	Room* getRoom() const;
 	int getHealth() const;
 	bool isAlive() const;

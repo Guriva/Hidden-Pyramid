@@ -22,7 +22,7 @@ int main() {
 	cout << "You decide to travel to the site and investigate what lies there..." << endl;
 	cout << endl;
 
-	//args.push_back("look");
+	args.push_back("look");
 
 	while (1) {
 		if (_kbhit() != 0) {

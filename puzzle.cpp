@@ -2,18 +2,17 @@
 #include "puzzle.h"
 #include "entity.h"
 
-Puzzle::Puzzle(const char* name, const char* description, Room* room) :
-	Entity(name,description,(Entity*)room) {
+Puzzle::Puzzle(const char* name, const char* description, PType puzzleType) :
+	Entity(name,description,nullptr), solved(false), puzzleType(puzzleType) {
 
 	type = PUZZLE;
-	solved = false;
 }
 
 Puzzle::~Puzzle() {
 
 }
 void Puzzle::look() const {
-	cout << "You see some kind of puzzle here: " << name << endl;
+	cout << name << endl;
 	cout << description << endl;
 }
 

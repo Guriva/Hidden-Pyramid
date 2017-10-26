@@ -5,15 +5,21 @@
 
 class Room;
 
+enum PType {
+	REQUIREMENTS,
+	MORSE
+};
+
 class Puzzle : public Entity {
 
 public:
-	Puzzle(const char* name, const char* description, Room* room);
+	Puzzle(const char* name, const char* description, PType puzzleType);
 	~Puzzle();
 	void look() const override;
 	bool isSolved() const;
 
 private:
+	PType puzzleType;
 	bool solved;
 };
 

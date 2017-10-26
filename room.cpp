@@ -25,7 +25,7 @@ void Room::look() const {
 	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
 		if ((*it)->type == EXIT) {
 			if (first) {
-				cout << "You can see an exit, ";
+				cout << "Exits here: ";
 				lookThing((*it));
 				first = false;
 			}
@@ -78,6 +78,7 @@ void Room::lookThing(const Entity* entity) const {
 				cout << ((Exit*)entity)->description;
 			else
 				cout << ((Exit*)entity)->getSecondDescr();
+			break;
 		}
 		case CREATURE:
 		{
@@ -85,10 +86,12 @@ void Room::lookThing(const Entity* entity) const {
 				cout << ((Creature*)entity)->name;
 			else
 				cout << "corpse of a " << ((Creature*)entity)->name;
+			break;
 		}
 		case ITEM:
 		{
 			cout << ((Item*)entity)->name;
+			break;
 		}
 	}
 }

@@ -30,7 +30,39 @@ bool Creature::look(const vector<string>& args) const {
 	return true;
 }
 
-void Creature::move(const vector<string>& args) {
+bool Creature::move(const vector<string>& args) {
+	return false;
+}
+
+bool Creature::use(const vector<string>& args) {
+	return false;
+}
+
+bool Creature::attack(const vector<string>& args) {
+	return false;
+}
+
+bool Creature::drop(const vector<string>& args) {
+	return false;
+}
+
+bool Creature::take(const vector<string>& args) {
+	return false;
+}
+
+bool Creature::put(const vector<string>& args) {
+	return false;
+}
+
+bool Creature::unlock(const vector<string>& args) {
+	return false;
+}
+
+void Creature::status() const {
+
+}
+
+void Creature::inventory() const {
 
 }
 
