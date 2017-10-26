@@ -22,3 +22,12 @@ void Entity::look() const {
 	cout << "You see " << name << endl;
 	cout << description << endl;
 }
+
+void Entity::newParent(Entity* p) {
+	if (parent != nullptr)
+		parent->entitiesInside.remove(this);
+	parent = p;
+	if (p != nullptr) {
+		parent->entitiesInside.push_back(this);
+	}
+}

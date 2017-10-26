@@ -4,6 +4,12 @@
 #include "creature.h"
 
 class Room;
+class Puzzle;
+
+enum PState {
+	WAITING,
+	SOLVING
+};
 
 class Player : public Creature {
 
@@ -19,12 +25,16 @@ public:
 	bool take(const vector<string>& args);
 	bool put(const vector<string>& args);
 	bool unlock(const vector<string>& args);
+	bool solve(const vector<string>& args);
 	void status() const;
 	void inventory() const;
 	bool examine(const vector<string>& args) const;
+	PState getState() const;
+	void setState(const PState state);
 
 private:
-
+	PState statePlayer;
+	Puzzle* solvingPuzzle = nullptr;
 };
 
 #endif //__Player__

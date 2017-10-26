@@ -21,6 +21,7 @@ public:
 	void look() const override;
 	Entity* containedIn() const;
 	bool isLocked() const;
+	void setPuzzle(Puzzle* p);
 
 private:
 	bool locked;

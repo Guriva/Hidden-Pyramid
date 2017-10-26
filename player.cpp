@@ -8,6 +8,7 @@ Player::Player(const char* name, const char* description, Room* room) :
 	Creature(name,description,room){
 
 	type = PLAYER;
+	statePlayer = WAITING;
 	healthPoints = 100;
 	enemy = false;
 }
@@ -65,7 +66,54 @@ bool Player::look(const vector<string>& args) const {
 }
 
 bool Player::move(const vector<string>& args) {
-	return false;
+	Exit* e = nullptr;
+	string exitName = "";
+	switch (args.size()) {
+		case 1: {
+			e = getRoom()->getExit(args[0]);
+			exitName = args[0];
+			break;
+		}
+		
+		case 2: {
+			e = getRoom()->getExit(args[1]);
+			exitName = args[1];
+			break;
+		}
+	}
+
+	if (e == nullptr) {
+		cout << "This exit doesn't exist " << endl;
+		return false;
+	}
+
+	if (e->isClosed()) {
+		if (e->hasPuzzle() && !e->puzzleSolved()) {
+			cout << "You try to go through the " << exitName << ", but it's closed." << endl;
+			e->lookPuzzle();
+			return false;
+		}
+		else if (e->needsKey()) {
+			cout << "It seems the exit needs some kind of key to be opened..." << endl;
+			return false;
+		}
+		else {
+			cout << "The exit is blocked and you cannot go through it anymore." << endl;
+			return false;
+		}
+	}
+
+	cout << "You go through the" << exitName << endl;
+	Room* r;
+	(e->name == parent->name) ? r = e->getDestination() : r = e->getSource();
+	newParent(r);
+
+	if (e->isOneWay())
+		e->setClosed(true);
+
+	parent->look();
+	
+	return true;
 }
 
 bool Player::use(const vector<string>& args) {
@@ -92,6 +140,10 @@ bool Player::unlock(const vector<string>& args) {
 	return false;
 }
 
+bool Player::solve(const vector<string>& args) {
+	return false;
+}
+
 void Player::status() const {
 
 }
@@ -102,4 +154,12 @@ void Player::inventory() const {
 
 bool Player::examine(const vector<string>& args) const {
 	return false;
+}
+
+PState Player::getState() const {
+	return statePlayer;
+}
+
+void Player::setState(const PState state) {
+	statePlayer = state;
 }

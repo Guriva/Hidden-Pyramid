@@ -44,3 +44,9 @@ Entity* Item::containedIn() const {
 bool Item::isLocked() const {
 	return locked;
 }
+
+void Item::setPuzzle(Puzzle* p) {
+	puzzle = p;
+	if (puzzle->isSolved() == false && locked == false)
+		locked = true;
+}

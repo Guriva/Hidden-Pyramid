@@ -70,6 +70,18 @@ void Room::look() const {
 	cout << endl;
 }
 
+Exit* Room::getExit(const string& exit) const {
+	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
+		if ((*it)->type == EXIT) {
+			string exitName = ((Exit*)(*it))->getExitName(this);
+			if (same(exitName, exit))
+				return ((Exit*)(*it));
+		}
+	}
+
+	return nullptr;
+}
+
 void Room::lookThing(const Entity* entity) const {
 	switch (entity->type) {
 		case EXIT:

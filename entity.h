@@ -25,6 +25,8 @@ public:
 	virtual void Update();
 	virtual void look() const;
 
+	void newParent(Entity* p);
+
 public:
 	EType type;
 	string name;
