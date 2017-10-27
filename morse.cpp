@@ -9,6 +9,10 @@ Morse::~Morse() {
 
 }
 
+void Morse::look() const {
+
+}
+
 bool Morse::checkCode(string code) {
 	return (code == answerCode);
 }

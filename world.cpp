@@ -17,7 +17,6 @@ World::World() {
 	entities.push_back(home);
 	entities.push_back(outside);
 
-
 	/*** Containers ***/
 	Item* backpack = new Item("Backpack", "A traditional backpack, you should know its purpose...", home, nullptr, nullptr, CONTAINER);
 	Item* drawer = new Item("Drawer", "A drawer to store items",home,nullptr,nullptr,CONTAINER,false);
@@ -39,7 +38,7 @@ World::World() {
 	entities.push_back(knife);
 
 	/*** Puzzles ***/
-	Requirements* req1 = new Requirements("Some kind of puzzle","You are not ready to go to the pyramid yet, you must take all your equipment, at least a backpack and a lantern",REQUIREMENTS);
+	Requirements* req1 = new Requirements("","You are not ready to go to the pyramid yet, you must take all your equipment: ",REQUIREMENTS);
 	req1->addRequirement(backpack);
 	req1->addRequirement(lantern);
 	entities.push_back(req1);
@@ -50,7 +49,8 @@ World::World() {
 	exitData eDataEx1;
 	eDataEx1.key = nullptr;
 	eDataEx1.puzzle = req1;
-	Exit* exit1 = new Exit("west", "west", "Exit of your room on the west", "This path leads to your house, but you don't wanna go home right now",home,outside,eDataEx1);
+	eDataEx1.onlyPassOnce = true;
+	Exit* exit1 = new Exit("west", "west", "Exit of your room on the west", "This path to the west leads to your house, but you don't wanna go home right now",home,outside,eDataEx1);
 	entities.push_back(exit1);
 	/*** Enemies ***/
 	
@@ -88,32 +88,38 @@ void World::entitiesUpdate() {
 	}
 }
 
-bool World::getInput(const vector<string>& args) {
+bool World::getInput(vector<string>& args) {
 	bool ret = true;
 	if (player->getState() == WAITING) {
 		switch (args.size()) {
 			case 1:
 			{
 				if (same(args[0], "look") || same(args[0], "l")) {
-					ret = player->look(args);
+					player->look(args);
 				}
 				else if (same(args[0], "north") || same(args[0], "n")) {
-					ret = player->move(args);
+					if (same(args[0], "n")) args[0] = "north";
+					player->move(args);
 				}
 				else if (same(args[0], "south") || same(args[0], "s")) {
-					ret = player->move(args);
+					if (same(args[0], "s")) args[0] = "south";
+					player->move(args);
 				}
 				else if (same(args[0], "east") || same(args[0], "e")) {
-					ret = player->move(args);
+					if (same(args[0], "e")) args[0] = "east";
+					player->move(args);
 				}
 				else if (same(args[0], "west") || same(args[0], "w")) {
-					ret = player->move(args);
+					if (same(args[0], "w")) args[0] = "west";
+					player->move(args);
 				}
 				else if (same(args[0], "up") || same(args[0], "u")) {
-					ret = player->move(args);
+					if (same(args[0], "u")) args[0] = "up";
+					player->move(args);
 				}
 				else if (same(args[0], "down") || same(args[0], "d")) {
-					ret = player->move(args);
+					if (same(args[0], "d")) args[0] = "down";
+					player->move(args);
 				}
 				else if (same(args[0], "status") || same(args[0], "st")) {
 					player->status();
@@ -128,28 +134,28 @@ bool World::getInput(const vector<string>& args) {
 			case 2:
 			{
 				if (same(args[0], "look") || same(args[0], "l")) {
-					ret = player->look(args);
+					player->look(args);
 				}
 				else if (same(args[0], "examine") || same(args[0], "ex")) {
-					ret = player->examine(args);
+					player->examine(args);
 				}
 				else if (same(args[0], "go")) {
-					ret = player->move(args);
+					player->move(args);
 				}
 				else if (same(args[0], "use")) {
-					ret = player->use(args);
+					player->use(args);
 				}
 				else if (same(args[0], "attack") || same(args[0], "at")) {
-					ret = player->attack(args);
+					player->attack(args);
 				}
 				else if (same(args[0], "drop") || same(args[0], "dp")) {
-					ret = player->drop(args);
+					player->drop(args);
 				}
 				else if (same(args[0], "take") || same(args[0], "tk")) {
-					ret = player->take(args);
+					player->take(args);
 				}
 				else if (same(args[0], "open") || same(args[0], "op")) {
-					ret = player->examine(args);
+					player->examine(args);
 				}
 				else
 					ret = false;
@@ -158,19 +164,16 @@ bool World::getInput(const vector<string>& args) {
 			case 4:
 			{
 				if (same(args[0], "attack") || same(args[0], "at")) {
-					ret = player->attack(args);
+					player->attack(args);
 				}
 				else if (same(args[0], "put") || same(args[0], "pt")) {
-					ret = player->put(args);
+					player->put(args);
 				}
 				else if (same(args[0], "take") || same(args[0], "tk")) {
 					player->take(args);
 				}
 				else if (same(args[0], "unlock") || same(args[0], "ulk")) {
-					ret = player->unlock(args);
-				}
-				else if (same(args[0], "solve") || same(args[0], "sl")) {
-					ret = player->solve(args);
+					player->unlock(args);
 				}
 				else
 					ret = false;

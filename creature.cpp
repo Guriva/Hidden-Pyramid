@@ -7,6 +7,7 @@ Creature::Creature(const char* name, const char* description, Room* room) :
 
 	type = CREATURE;
 	healthPoints = 10;
+	maxHealth = 20;
 	inCombat = false;
 }
 

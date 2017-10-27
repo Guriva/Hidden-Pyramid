@@ -1,3 +1,4 @@
+#include <iostream>
 #include "requirements.h"
 
 Requirements::Requirements(const char* name, const char* description, PType puzzleType) :
@@ -8,6 +9,14 @@ Requirements::Requirements(const char* name, const char* description, PType puzz
 
 Requirements::~Requirements() {
 
+}
+
+void Requirements::look() const {
+	cout << description << endl;
+	cout << "You need: " << endl;
+	for (unsigned int i = 0; i < entitiesReq.size(); ++i) {
+		cout << entitiesReq[i]->name << endl;
+	}
 }
 
 void Requirements::addRequirement(Entity* entity) {

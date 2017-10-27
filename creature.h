@@ -26,8 +26,9 @@ public:
 	bool isAlive() const;
 	bool isEnemy() const;
 
-protected:
+public:
 	int healthPoints;
+	int maxHealth;
 	bool inCombat;
 	bool enemy;
 };

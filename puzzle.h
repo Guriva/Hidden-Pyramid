@@ -15,10 +15,10 @@ class Puzzle : public Entity {
 public:
 	Puzzle(const char* name, const char* description, PType puzzleType);
 	~Puzzle();
-	void look() const override;
+	virtual void look() const;
 	bool isSolved() const;
 
-private:
+public:
 	PType puzzleType;
 	bool solved;
 };

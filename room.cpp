@@ -35,7 +35,7 @@ void Room::look() const {
 			}
 		}
 	}
-	cout << endl;
+	if (first == false) cout << endl;
 	first = true;
 
 	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
@@ -51,7 +51,7 @@ void Room::look() const {
 			}
 		}
 	}
-	cout << endl;
+	if (first == false) cout << endl;
 	first = true;
 
 	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
@@ -67,6 +67,7 @@ void Room::look() const {
 			}
 		}
 	}
+	if (first == false) cout << endl;
 	cout << endl;
 }
 

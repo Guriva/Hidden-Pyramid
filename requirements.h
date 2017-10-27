@@ -8,9 +8,10 @@ class Requirements : public Puzzle {
 public:
 	Requirements(const char* name, const char* description, PType puzzleType);
 	~Requirements();
+	void look() const;
 	void addRequirement(Entity* entity);
-	bool hasRequirements();
-private:
+
+public:
 	vector<Entity*> entitiesReq;
 };
 

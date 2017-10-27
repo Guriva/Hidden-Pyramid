@@ -9,8 +9,8 @@ class Puzzle;
 struct exitData {
 	Entity* key;
 	Puzzle* puzzle;
-	const bool onlyPassOnce = false;		//When player goes through, exit is closed
-	const bool ignoreDestination = false;	//You can't see the exit from the destination room
+	bool onlyPassOnce = false;		//When player goes through, exit is closed
+	bool ignoreDestination = false;	//You can't see the exit from the destination room
 };
 
 class Exit : public Entity {
@@ -32,7 +32,7 @@ public:
 	string getExitName(const Room* room) const;
 	void setClosed(const bool b);
 	
-protected:
+public:
 	bool closed;
 	bool onlyPassOnce;
 	string secondRoomExit;

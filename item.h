@@ -4,6 +4,7 @@
 #include "entity.h"
 
 class Puzzle;
+class Creature;
 
 enum IType {
 	WEAPON,
@@ -20,12 +21,13 @@ public:
 	~Item();
 	void look() const override;
 	Entity* containedIn() const;
-	bool isLocked() const;
 	void setPuzzle(Puzzle* p);
+	bool useItem(Creature* entity);
 
-private:
+public:
 	bool locked;
 	bool carriable;
+	unsigned int durability;
 	IType itemType;
 	Entity* key = nullptr;
 	Puzzle* puzzle = nullptr;

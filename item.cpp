@@ -2,6 +2,7 @@
 #include "item.h"
 #include "puzzle.h"
 #include "creature.h"
+#include "globals.h"
 
 Item::Item(const char* name, const char* description, Entity* entity, Entity* key, Puzzle* puzzle, IType itemType, const bool carriable) :
 	Entity(name,description, (Entity*)entity), key(key), puzzle(puzzle), locked(false), itemType(itemType), carriable(carriable) {
@@ -41,12 +42,20 @@ Entity* Item::containedIn() const {
 	return parent;
 }
 
-bool Item::isLocked() const {
-	return locked;
-}
-
 void Item::setPuzzle(Puzzle* p) {
 	puzzle = p;
 	if (puzzle->isSolved() == false && locked == false)
 		locked = true;
+}
+
+bool Item::useItem(Creature* entity) {
+	if (same(this->name, "bandaje") && entity->healthPoints < entity->maxHealth) {
+		entity->healthPoints += 1;
+		cout << "You have used a bandaje and recovered a little.";
+		return true;
+	}
+	else {
+		cout << "You are already fine, no need to use a bandaje" << endl;
+		return false;
+	}
 }

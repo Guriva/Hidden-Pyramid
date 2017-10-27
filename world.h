@@ -16,7 +16,7 @@ public:
 	~World();
 	bool Update(vector<string>& args);
 	void entitiesUpdate();
-	bool getInput(const vector<string>& args);
+	bool getInput(vector<string>& args);
 private:
 	vector<Entity*> entities;
 	Player* player = nullptr;

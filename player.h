@@ -25,14 +25,15 @@ public:
 	bool take(const vector<string>& args);
 	bool put(const vector<string>& args);
 	bool unlock(const vector<string>& args);
-	bool solve(const vector<string>& args);
 	void status() const;
 	void inventory() const;
 	bool examine(const vector<string>& args) const;
 	PState getState() const;
 	void setState(const PState state);
+	bool checkPuzzle(Puzzle* puzzle);
 
 private:
+	unsigned int maxInventory;
 	PState statePlayer;
 	Puzzle* solvingPuzzle = nullptr;
 };
