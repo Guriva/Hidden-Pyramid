@@ -11,6 +11,7 @@ Item::Item(const char* name, const char* description, Entity* entity, Entity* ke
 	if (key != nullptr || (puzzle != nullptr && !puzzle->isSolved())) {
 		locked = true;
 	}
+	moved = false;
 }
 
 Item::~Item() {
@@ -24,18 +25,6 @@ void Item::look() const {
 	if (itemType == CONTAINER) {
 		cout << "It may contains something inside" << endl;
 	}
-
-	/*This below needs to go when an item can be opened and it's opened*/
-
-	/*if (entitiesInside.size() > 0 && !locked) {
-		//Check for monsters inside items. If found one alive, it attacks the player
-		for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
-			if ((*it)->type == CREATURE && (Creature*)(*it)->enemy && !(Creature*)(*it)->inCombat) {
-
-			}
-			//TODO: check first if there is a creature. If true, the first creature attacks the player
-		}
-	}*/
 }
 
 Entity* Item::containedIn() const {
@@ -58,4 +47,27 @@ bool Item::useItem(Creature* entity) {
 		cout << "You are already fine, no need to use a bandaje" << endl;
 		return false;
 	}
+}
+
+void Item::effectMovable() {
+	if (same(name, "rock") && moved == false) {
+		moved = true;
+		cout << "You move the rock to a side..." << endl;
+		if (entitiesInside.size() > 0) {
+			cout << "You discover something under the rock:" << endl;
+			for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
+				if (parent != nullptr) {
+					if ((*it)->type == CREATURE)
+						cout << "A wild " << (*it)->name << " has appeared!" << endl;
+					else
+						cout << "a " << (*it)->name << endl;
+					(*it)->parent = parent;
+					parent->entitiesInside.push_back((*it));
+				}
+			}
+			entitiesInside.clear();
+		}
+	}
+	else
+		cout << "You already moved that object." << endl;
 }

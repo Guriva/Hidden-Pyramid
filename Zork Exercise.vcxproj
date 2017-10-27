@@ -111,6 +111,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bottlePuzzle.cpp" />
     <ClCompile Include="morse.cpp" />
     <ClCompile Include="creature.cpp" />
     <ClCompile Include="entity.cpp" />
@@ -125,6 +126,7 @@
     <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bottlePuzzle.h" />
     <ClInclude Include="morse.h" />
     <ClInclude Include="creature.h" />
     <ClInclude Include="entity.h" />

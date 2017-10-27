@@ -23,10 +23,12 @@ public:
 	Entity* containedIn() const;
 	void setPuzzle(Puzzle* p);
 	bool useItem(Creature* entity);
+	void effectMovable();
 
 public:
 	bool locked;
 	bool carriable;
+	bool moved;
 	unsigned int durability;
 	IType itemType;
 	Entity* key = nullptr;

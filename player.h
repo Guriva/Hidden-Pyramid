@@ -28,6 +28,7 @@ public:
 	void status() const;
 	void inventory() const;
 	bool examine(const vector<string>& args) const;
+	bool moveItem(const vector<string>& args);
 	PState getState() const;
 	void setState(const PState state);
 	bool checkPuzzle(Puzzle* puzzle);
@@ -35,7 +36,6 @@ public:
 private:
 	unsigned int maxInventory;
 	PState statePlayer;
-	Puzzle* solvingPuzzle = nullptr;
 };
 
 #endif //__Player__

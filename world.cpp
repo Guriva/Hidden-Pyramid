@@ -18,7 +18,7 @@ World::World() {
 	entities.push_back(outside);
 
 	/*** Containers ***/
-	Item* backpack = new Item("Backpack", "A traditional backpack, you should know its purpose...", home, nullptr, nullptr, CONTAINER);
+	Item* backpack = new Item("Backpack", "A traditional backpack, you should know its purpose.", home, nullptr, nullptr, CONTAINER);
 	Item* drawer = new Item("Drawer", "A drawer to store items",home,nullptr,nullptr,CONTAINER,false);
 	Item* shelf = new Item("Shelf", "You can see some books here, examine it closely to see it's content",home,nullptr,nullptr,CONTAINER,false);
 	entities.push_back(backpack);
@@ -26,9 +26,9 @@ World::World() {
 	entities.push_back(shelf);
 
 	/*** Usables ***/
-	Item* lantern = new Item("Lantern", "A lantern on the desk. It has a limited duration, be careful when to use it.",home,nullptr,nullptr,USABLE);
+	Item* lantern = new Item("Lantern", "A lantern on the desk. It could be useful for something,... or not.",home,nullptr,nullptr,USABLE);
 	Item* bandaje = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.",drawer,nullptr,nullptr,USABLE);
-	Item* book = new Item("Book", "In the title it says \"Morse Code\". You can see some letters here: C-·-·, E·, L·-··, P·--·, R·-·, S···, T-, U··-, Z--··",shelf,nullptr,nullptr,USABLE);
+	Item* book = new Item("Book", "In the title it says \"Morse Code\". You can see some letters here: C-.-., E., L.-.., P.--., R.-., S..., T-, U..-, Z--..",shelf,nullptr,nullptr,USABLE);
 	entities.push_back(lantern);
 	entities.push_back(bandaje);
 	entities.push_back(book);
@@ -42,7 +42,7 @@ World::World() {
 	req1->addRequirement(backpack);
 	req1->addRequirement(lantern);
 	entities.push_back(req1);
-	Morse* morse1 = new Morse("A strange code","It says: ·--·|··-|--··|--··|·-··|·",MORSE,"puzzle");
+	Morse* morse1 = new Morse("A strange code","It says: .--.|..-|--..|--..|.-..|.",MORSE,"puzzle");
 	drawer->setPuzzle(morse1);
 
 	/*** Exits ***/
@@ -61,6 +61,12 @@ World::World() {
 	/*** Player ***/
 	player = new Player("Player","",home);
 	entities.push_back(player);
+	Item* rock1 = new Item("Rock", "A small rock. Maybe you can move it and find something underneath it", home, nullptr, nullptr, MOVABLE, false);
+	Item* bandaje2 = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.", rock1, nullptr, nullptr, USABLE);
+	Item* bandaje3 = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.", rock1, nullptr, nullptr, USABLE);
+	entities.push_back(rock1);
+	entities.push_back(bandaje2);
+	entities.push_back(bandaje3);
 }
 
 World::~World() {
@@ -154,8 +160,8 @@ bool World::getInput(vector<string>& args) {
 				else if (same(args[0], "take") || same(args[0], "tk")) {
 					player->take(args);
 				}
-				else if (same(args[0], "open") || same(args[0], "op")) {
-					player->examine(args);
+				else if (same(args[0], "move") || same(args[0], "mv")) {
+					player->moveItem(args);
 				}
 				else
 					ret = false;
@@ -183,7 +189,7 @@ bool World::getInput(vector<string>& args) {
 	}
 
 	if (player->getState() == SOLVING) {
-
+		//player->solve();
 	}
 
 	return ret;

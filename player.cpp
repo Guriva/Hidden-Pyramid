@@ -38,7 +38,24 @@ bool Player::look(const vector<string>& args) const {
 			inventory();
 			return true;
 		}
+
+		// Look for the item in your inventory
+		for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
+			if (same((*it)->name, args[1])) {
+				(*it)->look();
+				return true;
+			}
+			if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
+				for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
+					if (same((*it2)->name, args[1])) {
+						(*it2)->look();
+						return true;
+					}
+				}
+			}
+		}
 		
+		// If not, look if it is in the room
 		for (list<Entity*>::const_iterator it = parent->entitiesInside.begin(); it != parent->entitiesInside.cend(); ++it)
 		{
 			if ((*it)->type == EXIT && same((*it)->name, args[1])) {
@@ -62,6 +79,12 @@ bool Player::look(const vector<string>& args) const {
 }
 
 bool Player::move(const vector<string>& args) {
+
+	if (inCombat) {
+		cout << "You are being attacked right now, watch your back!" << endl;
+		return false;
+	}
+
 	Exit* e = nullptr;
 	string exitName = "";
 	switch (args.size()) {
@@ -88,7 +111,7 @@ bool Player::move(const vector<string>& args) {
 			cout << "It seems the exit needs some kind of key to be opened..." << endl;
 			return false;
 		}
-		else if (e->puzzle != nullptr && !e->puzzle->solved) {
+		else if (e->puzzle != nullptr && e->puzzle->solved == false) {
 			if (checkPuzzle(e->puzzle) == false)
 				return false;
 			else {
@@ -148,13 +171,21 @@ bool Player::attack(const vector<string>& args) {
 
 bool Player::drop(const vector<string>& args) {
 	Item* item = nullptr;
+
+	// check if you carry the item or it is inside of another one
 	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
 		if ((*it)->type == ITEM && same((*it)->name, args[1]))
 			item = (Item*)(*it);
+		else if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
+			for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
+				if ((*it2)->type == ITEM && same((*it2)->name, args[1]))
+					item = (Item*)(*it2);
+			}
+		}
 	}
 
 	if (item == nullptr) {
-		cout << "You don't have that item in your inventory";
+		cout << "You don't have that item in your inventory" << endl;
 		return false;
 	}
 
@@ -169,12 +200,18 @@ bool Player::take(const vector<string>& args) {
 	{
 		Item* item = nullptr;
 		for (list<Entity*>::const_iterator it = parent->entitiesInside.begin(); it != parent->entitiesInside.cend(); ++it) {
-			if ((*it)->type == ITEM && ((Item*)(*it))->carriable && same((*it)->name, args[1]))
-				item = (Item*)(*it);
+			if (same((*it)->name, args[1]) && (*it)->type == ITEM) {
+				if (((Item*)(*it))->carriable)
+					item = (Item*)(*it);
+				else {
+					cout << "You cannot take that item with you." << endl;
+					return false;
+				}
+			}
 		}
 
 		if (item == nullptr) {
-			cout << "You can't find such an item";
+			cout << "You can't find such an item" << endl;
 			return false;
 		}
 
@@ -253,6 +290,43 @@ bool Player::take(const vector<string>& args) {
 }
 
 bool Player::put(const vector<string>& args) {
+	Item* item = nullptr;
+
+	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
+		if ((*it)->type == ITEM && same((*it)->name, args[1]))
+			item = (Item*)(*it);
+		else if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
+			for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
+				if ((*it2)->type == ITEM && same((*it2)->name, args[1]))
+					item = (Item*)(*it2);
+			}
+		}
+	}
+
+	if (item == nullptr) {
+		cout << "You don't have that item in your inventory" << endl;
+		return false;
+	}
+
+	Entity* entity = nullptr;
+
+	for (list<Entity*>::const_iterator it = parent->entitiesInside.begin(); it != parent->entitiesInside.cend(); ++it) {
+		if (same((*it)->name, args[3]))
+			entity = (*it);
+	}
+
+	if (entity == nullptr) {
+		cout << "You can't find anything like that to put in the " << args[1] << endl;
+		return false;
+	}
+
+	if (entity->type == ITEM && ((Item*)entity)->itemType == CONTAINER && ((Item*)entity)->locked == false) {
+		cout << "You have put " << args[1] << " inside the " << args[3] << endl;
+		item->newParent(entity);
+		return true;
+	}
+
+	cout << "You cannot put that into " << args[3] << endl;
 	return false;
 }
 
@@ -261,7 +335,23 @@ bool Player::unlock(const vector<string>& args) {
 }
 
 void Player::status() const {
+	if (healthPoints == 10) {
+		cout << "You don't have any injuries. You are completely fine." << endl;
+		return;
+	}
+	if (healthPoints > 7) {
+		cout << "You only have some scratches, but nothing important" << endl;
+		return;
+	}
+	if (healthPoints > 5) {
+		cout << "You have some injuries, take care." << endl;
+		return;
+	}
 
+	if (healthPoints < 3) {
+		cout << "You almost cannot stand it, you need some bandaje right now!" << endl;
+		return;
+	}
 }
 
 void Player::inventory() const {
@@ -282,7 +372,98 @@ void Player::inventory() const {
 }
 
 bool Player::examine(const vector<string>& args) const {
-	return false;
+	Entity* entity = nullptr;
+
+	if (same(args[1], "room"))
+		entity = parent;
+
+	for (list<Entity*>::const_iterator it = parent->entitiesInside.begin(); it != parent->entitiesInside.cend() && entity == nullptr; ++it) {
+		if (same((*it)->name, args[1]))
+			entity = (*it);
+	}
+
+	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend() && entity == nullptr; ++it) {
+		if (same((*it)->name, args[1]))
+			entity = (*it);
+		else if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
+			for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
+				if (same((*it2)->name, args[1]))
+					entity = (*it2);
+			}
+		}
+	}
+
+	if (entity == nullptr) {
+		cout << "There's nothing like that in this room" << endl;
+		return false;
+	}
+
+	switch (entity->type) {
+		case CREATURE: {
+			cout << "You look closely at " << ((Creature*)entity)->name << endl;
+			((Creature*)entity)->status();
+			break;
+		}
+		case ITEM: {
+			((Item*)entity)->look();
+			if (((Item*)entity)->locked) {
+				if (((Item*)entity)->key != nullptr)
+					cout << "It needs a key to be opened." << endl;
+				else if (((Item*)entity)->puzzle != nullptr && ((Item*)entity)->puzzle->solved == false) {
+					((Item*)entity)->puzzle->look();
+				}
+			}
+			else if (((Item*)entity)->itemType == CONTAINER){
+				cout << "It contains: " << endl;
+				for (list<Entity*>::const_iterator it = ((Item*)entity)->entitiesInside.begin(); it != ((Item*)entity)->entitiesInside.cend(); ++it) {
+					cout << (*it)->name << endl;
+				}
+			}
+			break;
+		}
+		case EXIT: {
+			if (((Exit*)entity)->isClosed()) {
+				if (((Exit*)entity)->needsKey()) {
+					cout << "It seems the exit needs some kind of key to be opened..." << endl;
+					return false;
+				}
+				else if (((Exit*)entity)->puzzle != nullptr && ((Exit*)entity)->puzzle->solved == false) {
+					((Exit*)entity)->puzzle->look();
+				}
+				else {
+					cout << "The exit is blocked and you cannot go through it anymore." << endl;
+					return false;
+				}
+			}
+			else {
+				((Exit*)entity)->look((Room*)parent);
+			}
+			break;
+		}
+		case ROOM: {
+			((Room*)entity)->look();
+			break;
+		}
+	}
+
+	return true;
+}
+
+bool Player::moveItem(const vector<string>& args) {
+	Item* item = nullptr;
+
+	for (list<Entity*>::const_iterator it = parent->entitiesInside.begin(); it != parent->entitiesInside.cend() && item == nullptr; ++it) {
+		if (same((*it)->name, args[1]) && (*it)->type == ITEM && ((Item*)(*it))->itemType == MOVABLE) {
+			item = (Item*)(*it);
+			item->effectMovable();
+		}
+	}
+
+	if (item == nullptr) {
+		cout << "You can't find such a thing" << endl;
+		return false;
+	}
+	return true;
 }
 
 PState Player::getState() const {

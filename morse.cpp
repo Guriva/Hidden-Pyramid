@@ -1,3 +1,4 @@
+#include <iostream>
 #include "morse.h"
 
 Morse::Morse(const char* name, const char* description, PType puzzleType, string answerCode) :
@@ -10,7 +11,8 @@ Morse::~Morse() {
 }
 
 void Morse::look() const {
-
+	cout << "It is locked by a puzzle: " << name << endl;
+	cout << description << endl;
 }
 
 bool Morse::checkCode(string code) {
