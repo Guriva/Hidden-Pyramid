@@ -22,6 +22,7 @@ public:
 	void look() const override;
 	Entity* containedIn() const;
 	void setPuzzle(Puzzle* p);
+	void setKey(Item* item);
 	bool useItem(Creature* entity);
 	void effectMovable();
 

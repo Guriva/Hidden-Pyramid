@@ -6,6 +6,8 @@
 #include "item.h"
 #include "puzzle.h"
 #include "requirements.h"
+#include "morse.h"
+#include "bottlePuzzle.h"
 #include "globals.h"
 
 Player::Player(const char* name, const char* description, Room* room) :
@@ -116,7 +118,7 @@ bool Player::move(const vector<string>& args) {
 				return false;
 			else {
 				e->puzzle = nullptr;
-				e->closed = false;
+				e->locked = false;
 			}
 		}
 		else {
@@ -131,7 +133,7 @@ bool Player::move(const vector<string>& args) {
 	newParent(r);
 
 	if (e->onlyPassOnce)
-		e->closed = true;
+		e->locked = true;
 
 	parent->look();
 	
@@ -331,6 +333,108 @@ bool Player::put(const vector<string>& args) {
 }
 
 bool Player::unlock(const vector<string>& args) {
+	for (list<Entity*>::const_iterator it = parent->entitiesInside.begin(); it != parent->entitiesInside.cend(); ++it) {
+
+		if (same(args[1], (*it)->name) && (*it)->type == ITEM && ((Item*)(*it))->locked) {
+			if (((Item*)(*it))->key != nullptr) {
+				return unlockItemKey((Item*)(*it));
+			}
+			else if (((Item*)(*it))->puzzle != nullptr && ((Item*)(*it))->puzzle->solved == false) {
+				if (checkPuzzle(((Item*)(*it))->puzzle)) {
+					cout << "You meet the requirements to pass through." << endl;
+					return true;
+				}
+				statePlayer = SOLVING;
+				entityUnlocking = ((Item*)(*it));
+				((Item*)(*it))->puzzle->unlockRules();
+				return true;
+				//change player state to solving and waiting for an answer
+				
+			}
+			else {
+				cout << "This item cannot be unlocked." << endl;
+				return false;
+			}
+		}
+
+		if (same(args[1], (*it)->name) && (*it)->type == EXIT && ((Exit*)(*it))->locked) {
+			if (((Exit*)(*it))->key != nullptr) {
+				return unlockExitKey((Exit*)(*it));
+			}
+			else if (((Exit*)(*it))->puzzle != nullptr && ((Exit*)(*it))->puzzle->solved == false) {
+				if (checkPuzzle(((Exit*)(*it))->puzzle)) {
+					cout << "You meet the requirements to pass through." << endl;
+					return true;
+				}
+				statePlayer = SOLVING;
+				entityUnlocking = ((Exit*)(*it));
+				((Exit*)(*it))->puzzle->unlockRules();
+				return true;
+			}
+			else {
+				cout << "This exit cannot be unlocked." << endl;
+				return false;
+			}
+		}
+	}
+
+	cout << "You don't find such a thing to unlock" << endl;
+	return false;
+}
+
+bool Player::unlockExitKey(Exit* exit) {
+	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
+		if ((*it)->type == ITEM && exit->key == (*it)) {
+			cout << "You use the key " << (*it)->name << " on " << exit->name << endl;
+			exit->key = nullptr;
+			(*it)->newParent(nullptr);
+			if (exit->puzzle == nullptr)
+				exit->locked = false;
+			return true;
+		}
+		else if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
+			for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
+				if ((*it2)->type == ITEM && exit->key == (*it2)) {
+					cout << "You use the key " << (*it2)->name << " on " << exit->name << endl;
+					exit->key = nullptr;
+					(*it2)->newParent(nullptr);
+					if (exit->puzzle == nullptr)
+						exit->locked = false;
+					return true;
+				}
+			}
+		}
+	}
+
+	cout << "You don't have the key to unlock the exit" << endl;
+	return false;
+}
+
+bool Player::unlockItemKey(Item* item) {
+	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
+		if ((*it)->type == ITEM && item->key == (*it)) {
+			cout << "You use the key " << (*it)->name << " on " << item->name << endl;
+			item->key = nullptr;
+			(*it)->newParent(nullptr);
+			if (item->puzzle == nullptr)
+				item->locked = false;
+			return true;
+		}
+		else if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
+			for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
+				if ((*it2)->type == ITEM && item->key == (*it2)) {
+					cout << "You use the key " << (*it2)->name << " on " << item->name << endl;
+					item->key = nullptr;
+					(*it2)->newParent(nullptr);
+					if (item->puzzle == nullptr)
+						item->locked = false;
+					return true;
+				}
+			}
+		}
+	}
+
+	cout << "You don't have the key to unlock the item" << endl;
 	return false;
 }
 
@@ -352,6 +456,28 @@ void Player::status() const {
 		cout << "You almost cannot stand it, you need some bandaje right now!" << endl;
 		return;
 	}
+}
+
+bool Player::solve(const vector<string>& args) {
+	statePlayer = WAITING;
+	if (entityUnlocking == nullptr)
+		return false;
+
+	if (entityUnlocking->type == EXIT) {
+		if (((Exit*)entityUnlocking)->puzzle->checkAnswer(args)) {
+			((Exit*)entityUnlocking)->puzzle = nullptr;
+			((Exit*)entityUnlocking)->locked = false;
+			return true;
+		}
+	}
+	else if (entityUnlocking->type == ITEM) {
+		if (((Item*)entityUnlocking)->puzzle->checkAnswer(args)) {
+			((Item*)entityUnlocking)->puzzle = nullptr;
+			((Item*)entityUnlocking)->locked = false;
+			return true;
+		}
+	}
+	return false;
 }
 
 void Player::inventory() const {
@@ -412,11 +538,20 @@ bool Player::examine(const vector<string>& args) const {
 				else if (((Item*)entity)->puzzle != nullptr && ((Item*)entity)->puzzle->solved == false) {
 					((Item*)entity)->puzzle->look();
 				}
+				else {
+					cout << "This item is locked completely and cannot be opened" << endl;
+					return false;
+				}
 			}
-			else if (((Item*)entity)->itemType == CONTAINER){
-				cout << "It contains: " << endl;
-				for (list<Entity*>::const_iterator it = ((Item*)entity)->entitiesInside.begin(); it != ((Item*)entity)->entitiesInside.cend(); ++it) {
-					cout << (*it)->name << endl;
+			else if (((Item*)entity)->itemType == CONTAINER) {
+				if (((Item*)entity)->entitiesInside.size() > 0) {
+					cout << "It contains: " << endl;
+					for (list<Entity*>::const_iterator it = ((Item*)entity)->entitiesInside.begin(); it != ((Item*)entity)->entitiesInside.cend(); ++it) {
+						cout << (*it)->name << endl;
+					}
+				}
+				else {
+					cout << "But there's nothing inside" << endl;
 				}
 			}
 			break;
@@ -479,7 +614,7 @@ bool Player::checkPuzzle(Puzzle* puzzle) {
 		case REQUIREMENTS: {
 			// check if player has every object that requirements asks for
 			for (unsigned int i = 0; i < ((Requirements*)puzzle)->entitiesReq.size(); ++i) {
-				if (find(entitiesInside.begin(), entitiesInside.end(), ((Requirements*)puzzle)->entitiesReq[i]) != entitiesInside.end() == false) {
+				if (itContains(((Requirements*)puzzle)->entitiesReq[i]) == false) {
 					puzzle->look();
 					return false;
 				}
@@ -490,6 +625,20 @@ bool Player::checkPuzzle(Puzzle* puzzle) {
 		default: {
 			puzzle->look();
 			break;
+		}
+	}
+	return false;
+}
+
+bool Player::itContains(Entity* entity) {
+	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
+		if (same((*it)->name, entity->name))
+			return true;
+		if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
+			for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
+				if (same((*it2)->name, entity->name))
+					return true;
+			}
 		}
 	}
 	return false;

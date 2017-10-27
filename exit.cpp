@@ -6,7 +6,7 @@
 
 Exit::Exit(const char* name, const char* secondRoomExit, const char* description,const char* secondDescr, Room* source, Room* destination, exitData eData) :
 	Entity(name, description, (Entity*)source), destination(destination), secondRoomExit(secondRoomExit),
-	secondDescription(secondDescr), key(eData.key), puzzle(eData.puzzle), closed(false), onlyPassOnce(eData.onlyPassOnce) {
+	secondDescription(secondDescr), key(eData.key), puzzle(eData.puzzle), locked(false), onlyPassOnce(eData.onlyPassOnce) {
 
 	type = EXIT;
 	if (destination != nullptr && !eData.ignoreDestination) {
@@ -14,7 +14,7 @@ Exit::Exit(const char* name, const char* secondRoomExit, const char* description
 	}
 
 	if (key != nullptr || (puzzle != nullptr && !puzzle->isSolved())) {
-		closed = true;
+		locked = true;
 	}
 }
 Exit::~Exit() {
@@ -37,7 +37,7 @@ void Exit::look(const Room* room) const {
 }
 
 bool Exit::isClosed() {
-	return closed;
+	return locked;
 }
 
 bool Exit::hasPuzzle() {
@@ -77,5 +77,5 @@ string Exit::getExitName(const Room* room) const {
 }
 
 void Exit::setClosed(const bool b) {
-	closed = b;
+	locked = b;
 }

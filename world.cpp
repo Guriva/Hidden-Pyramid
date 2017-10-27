@@ -61,12 +61,6 @@ World::World() {
 	/*** Player ***/
 	player = new Player("Player","",home);
 	entities.push_back(player);
-	Item* rock1 = new Item("Rock", "A small rock. Maybe you can move it and find something underneath it", home, nullptr, nullptr, MOVABLE, false);
-	Item* bandaje2 = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.", rock1, nullptr, nullptr, USABLE);
-	Item* bandaje3 = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.", rock1, nullptr, nullptr, USABLE);
-	entities.push_back(rock1);
-	entities.push_back(bandaje2);
-	entities.push_back(bandaje3);
 }
 
 World::~World() {
@@ -163,6 +157,9 @@ bool World::getInput(vector<string>& args) {
 				else if (same(args[0], "move") || same(args[0], "mv")) {
 					player->moveItem(args);
 				}
+				else if (same(args[0], "unlock") || same(args[0], "ulk")) {
+					player->unlock(args);
+				}
 				else
 					ret = false;
 				break;
@@ -178,9 +175,6 @@ bool World::getInput(vector<string>& args) {
 				else if (same(args[0], "take") || same(args[0], "tk")) {
 					player->take(args);
 				}
-				else if (same(args[0], "unlock") || same(args[0], "ulk")) {
-					player->unlock(args);
-				}
 				else
 					ret = false;
 				break;
@@ -188,8 +182,8 @@ bool World::getInput(vector<string>& args) {
 		}
 	}
 
-	if (player->getState() == SOLVING) {
-		//player->solve();
+	else if (player->getState() == SOLVING) {
+		player->solve(args);
 	}
 
 	return ret;

@@ -9,7 +9,8 @@ public:
 	Morse(const char* name, const char* description, PType puzzleType, string answerCode);
 	~Morse();
 	void look() const;
-	bool checkCode(string code);
+	bool checkAnswer(const vector<string>& args);
+	void unlockRules();
 
 private:
 	string answerCode;

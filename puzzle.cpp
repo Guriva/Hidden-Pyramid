@@ -22,3 +22,11 @@ void Puzzle::look() const {
 bool Puzzle::isSolved() const {
 	return solved;
 }
+
+bool Puzzle::checkAnswer(const vector<string>& args) {
+	return false;
+}
+
+void Puzzle::unlockRules() {
+	cout << description << endl;
+}

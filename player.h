@@ -5,6 +5,8 @@
 
 class Room;
 class Puzzle;
+class Item;
+class Exit;
 
 enum PState {
 	WAITING,
@@ -25,17 +27,22 @@ public:
 	bool take(const vector<string>& args);
 	bool put(const vector<string>& args);
 	bool unlock(const vector<string>& args);
+	bool unlockExitKey(Exit* exit);
+	bool unlockItemKey(Item* item);
 	void status() const;
+	bool solve(const vector<string>& args);
 	void inventory() const;
 	bool examine(const vector<string>& args) const;
 	bool moveItem(const vector<string>& args);
 	PState getState() const;
 	void setState(const PState state);
 	bool checkPuzzle(Puzzle* puzzle);
+	bool itContains(Entity* entity);
 
 private:
 	unsigned int maxInventory;
 	PState statePlayer;
+	Entity* entityUnlocking;
 };
 
 #endif //__Player__

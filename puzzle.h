@@ -7,7 +7,8 @@ class Room;
 
 enum PType {
 	REQUIREMENTS,
-	MORSE
+	MORSE,
+	BOTTLES
 };
 
 class Puzzle : public Entity {
@@ -16,6 +17,8 @@ public:
 	Puzzle(const char* name, const char* description, PType puzzleType);
 	~Puzzle();
 	virtual void look() const;
+	virtual bool checkAnswer(const vector<string>& args);
+	virtual void unlockRules();
 	bool isSolved() const;
 
 public:

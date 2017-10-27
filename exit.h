@@ -33,7 +33,7 @@ public:
 	void setClosed(const bool b);
 	
 public:
-	bool closed;
+	bool locked;
 	bool onlyPassOnce;
 	string secondRoomExit;
 	string secondDescription;

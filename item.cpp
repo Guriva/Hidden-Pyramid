@@ -37,16 +37,27 @@ void Item::setPuzzle(Puzzle* p) {
 		locked = true;
 }
 
+void Item::setKey(Item* item) {
+	key = item;
+	if (locked == false)
+		locked = true;
+}
+
 bool Item::useItem(Creature* entity) {
-	if (same(this->name, "bandaje") && entity->healthPoints < entity->maxHealth) {
-		entity->healthPoints += 1;
-		cout << "You have used a bandaje and recovered a little.";
-		return true;
+	if (same(this->name, "bandaje")) {
+		if (entity->healthPoints < entity->maxHealth) {
+			entity->healthPoints += 1;
+			cout << "You have used a bandaje and recovered a little.";
+			return true;
+		}
+		else {
+			cout << "You are already fine, no need to use a bandaje" << endl;
+			return false;
+		}
 	}
-	else {
-		cout << "You are already fine, no need to use a bandaje" << endl;
-		return false;
-	}
+
+	cout << "You cannot use this item on yourself" << endl;
+	return false;
 }
 
 void Item::effectMovable() {
