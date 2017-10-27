@@ -17,7 +17,7 @@ BottlePuzzle::BottlePuzzle(const char* name, const char* description, PType puzz
 	possibleBottles.push_back("green");
 	possibleBottles.push_back("purple");
 	possibleBottles.push_back("brown");
-	for (unsigned int i = 0; i < numberBottles; ++i) {
+	for (int i = 0; i < numberBottles; ++i) {
 		orderBottles.push_back(possibleBottles[i]);
 	}
 	if (numberBottles > 1) {

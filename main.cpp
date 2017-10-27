@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
+#include <windows.h>
 #include "world.h"
 #include "globals.h"
 using namespace std;
@@ -24,7 +25,7 @@ int main() {
 
 	args.push_back("look");
 
-	while (1) {
+	while (world.playerAlive()) {
 		if (_kbhit() != 0) {
 			input = _getch();
 			if (input == '\b') {
@@ -47,14 +48,27 @@ int main() {
 		if (args.size() > 0 && same(args[0],"quit")) {
 			break;
 		}
-
-		if (world.Update(args) == false)
-			cout << "Sorry, what did you said?" << endl;
 		
 		if (args.size() > 0) {
+			if (world.Update(args) == false)
+				cout << "Sorry, what did you said?" << endl;
+
 			concatenatedInput = "";
 			args.clear();
 			cout << endl << "> ";
 		}
+		else {
+			if (world.entitiesUpdate())
+				cout << "> " << concatenatedInput;
+		}
 	}
+
+	if (world.playerAlive() == false) {
+		cout << "You have died before exploring all the pyramid :(" << endl;
+	}
+
+	cout << "Thanks for playing!" << endl;
+	cout << "The window will close automatically after 10 seconds." << endl;
+	Sleep(10000);
+	return 0;
 }

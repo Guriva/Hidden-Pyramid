@@ -14,7 +14,8 @@ enum EType {
 	EXIT,
 	ROOM,
 	ITEM,
-	ENTITY
+	ENTITY,
+	ENEMY
 };
 
 class Entity {
@@ -22,7 +23,7 @@ class Entity {
 public:
 	Entity(const char* name, const char* description, Entity* parent);
 	virtual ~Entity();
-	virtual void Update();
+	virtual bool Update(float frameTime);
 	virtual void look() const;
 
 	void newParent(Entity* p);

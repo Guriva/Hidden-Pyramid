@@ -15,8 +15,8 @@ Creature::~Creature() {
 
 }
 
-void Creature::Update() {
-
+bool Creature::Update(float frameTime) {
+	return false;
 }
 
 bool Creature::look(const vector<string>& args) const {
@@ -60,7 +60,12 @@ bool Creature::unlock(const vector<string>& args) {
 }
 
 void Creature::status() const {
-
+	if (isAlive()) {
+		cout << description << endl;
+	}
+	else {
+		cout << "It is dead" << endl;
+	}
 }
 
 void Creature::inventory() const {
@@ -79,6 +84,12 @@ bool Creature::isAlive() const {
 	return healthPoints > 0;
 }
 
-bool Creature::isEnemy() const {
-	return enemy;
+Creature* Creature::findPlayer(Entity* entity) {
+	Creature* creature = nullptr;
+	for (list<Entity*>::const_iterator it = entity->entitiesInside.begin(); it != entity->entitiesInside.cend() && creature == nullptr; ++it) {
+		if ((*it)->type == PLAYER) {
+			creature = (Creature*)(*it);
+		}
+	}
+	return creature;
 }

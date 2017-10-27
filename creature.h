@@ -10,7 +10,7 @@ class Creature : public Entity {
 public:
 	Creature(const char* name, const char* description, Room* room);
 	~Creature();
-	virtual void Update();
+	virtual bool Update(float frameTime);
 	virtual bool look(const vector<string>& args) const;
 	virtual bool move(const vector<string>& args);
 	virtual bool use(const vector<string>& args);
@@ -21,16 +21,17 @@ public:
 	virtual bool unlock(const vector<string>& args);
 	virtual void status() const;
 	virtual void inventory() const;
+	Creature* findPlayer(Entity* entity);
 	Room* getRoom() const;
 	int getHealth() const;
 	bool isAlive() const;
-	bool isEnemy() const;
 
 public:
 	int healthPoints;
 	int maxHealth;
 	bool inCombat;
-	bool enemy;
+	bool avoiding;
+	Creature* target = nullptr;
 };
 
 #endif //__Creature__

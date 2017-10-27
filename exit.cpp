@@ -21,10 +21,6 @@ Exit::~Exit() {
 
 }
 
-void Exit::Update() {
-
-}
-
 void Exit::look(const Room* room) const {
 	if (same(room->name, ((Room*)parent)->name)) {
 		cout << "You see an exit: ";

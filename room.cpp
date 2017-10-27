@@ -39,7 +39,7 @@ void Room::look() const {
 	first = true;
 
 	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
-		if ((*it)->type == CREATURE) {
+		if ((*it)->type == ENEMY || (*it)->type == CREATURE) {
 			if (first) {
 				cout << "You see a ";
 				lookThing((*it));

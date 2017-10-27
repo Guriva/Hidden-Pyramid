@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "world.h"
 #include "room.h"
 #include "exit.h"
@@ -8,9 +9,12 @@
 #include "requirements.h"
 #include "morse.h"
 #include "bottlePuzzle.h"
+#include "snake.h"
 #include "globals.h"
 
 World::World() {
+
+	prevTime = clock();
 
 	/*** Rooms ***/
 	Room* home = new Room("Bedroom","This is your room. It looks very tidy and decorated with some old gadgets");
@@ -29,13 +33,15 @@ World::World() {
 	/*** Usables ***/
 	Item* lantern = new Item("Lantern", "A lantern on the desk. It could be useful for something,... or not.",home,nullptr,nullptr,WEAPON);
 	Item* bandaje = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.",drawer,nullptr,nullptr,USABLE);
+	Item* bandaje2 = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.", home, nullptr, nullptr, USABLE);
 	Item* book = new Item("Book", "In the title it says \"Morse Code\". You can see some letters here: C-.-., E., L.-.., P.--., R.-., S..., T-, U..-, Z--..",shelf,nullptr,nullptr,USABLE);
 	entities.push_back(lantern);
 	entities.push_back(bandaje);
+	entities.push_back(bandaje2);
 	entities.push_back(book);
 
 	/*** Weapons ***/
-	Item* knife = new Item("Knife", "A small knife, mostly used to kill enem... ehem, to shave the beard.", drawer, nullptr, nullptr, WEAPON);
+	Item* knife = new Item("Knife", "A small knife, mostly used to kill enem... ehem, to shave the beard.", home, nullptr, nullptr, WEAPON);
 	entities.push_back(knife);
 
 	/*** Puzzles ***/
@@ -45,7 +51,7 @@ World::World() {
 	entities.push_back(req1);
 	Morse* morse1 = new Morse("A strange code","It says: .--.|..-|--..|--..|.-..|.",MORSE,"puzzle");
 	BottlePuzzle* bottleP1 = new BottlePuzzle("Some kind of platforms","There are some platforms and some bottles, they must serve for something.",BOTTLES,4,5);
-	drawer->setPuzzle(bottleP1);
+	drawer->setPuzzle(morse1);
 
 	/*** Exits ***/
 	exitData eDataEx1;
@@ -54,8 +60,11 @@ World::World() {
 	eDataEx1.onlyPassOnce = true;
 	Exit* exit1 = new Exit("west", "west", "Exit of your room on the west", "This path to the west leads to your house, but you don't wanna go home right now",home,outside,eDataEx1);
 	entities.push_back(exit1);
+
 	/*** Enemies ***/
-	
+	Snake* snake = new Snake("Snake","It's a small snake, with green and yellow skin. Seems poisonous.",home,false);
+	entities.push_back(snake);
+
 	//Room* room2 = new Room("Inside", "You are inside the pyramid. The walls are decorated with strange symbols.");
 	/*Exit* exit1 = new Exit("east", "west", "Small structure of stones that leads inside the pyramid to the east",
 		"Small structure of stones that leads outside of the pyramid to the west",room1,room2,BOTH);*/
@@ -80,14 +89,20 @@ bool World::Update(vector<string>& args) {
 		ret = getInput(args);
 
 	entitiesUpdate();
-
 	return ret;
 }
 
-void World::entitiesUpdate() {
+bool World::entitiesUpdate() {
+	clock_t time = clock();
+
+	bool ret = false;
+
 	for (unsigned int i = 0; i < entities.size(); ++i) {
-		entities[i]->Update();
+		ret |= entities[i]->Update(((float)(time - prevTime)) / CLOCKS_PER_SEC);
 	}
+
+	prevTime = time;
+	return ret;
 }
 
 bool World::getInput(vector<string>& args) {
@@ -129,6 +144,9 @@ bool World::getInput(vector<string>& args) {
 				else if (same(args[0], "inventory") || same(args[0], "i")) {
 					player->inventory();
 				}
+				else if (same(args[0],"avoid")) {
+					player->avoid(args);
+				}
 				else
 					ret = false;
 				break;
@@ -146,9 +164,6 @@ bool World::getInput(vector<string>& args) {
 				}
 				else if (same(args[0], "use")) {
 					player->use(args);
-				}
-				else if (same(args[0], "attack") || same(args[0], "at")) {
-					player->attack(args);
 				}
 				else if (same(args[0], "drop") || same(args[0], "dp")) {
 					player->drop(args);
@@ -168,7 +183,7 @@ bool World::getInput(vector<string>& args) {
 			}
 			case 4:
 			{
-				if (same(args[0], "attack") || same(args[0], "at")) {
+				if (same(args[0], "attack")) {
 					player->attack(args);
 				}
 				else if (same(args[0], "put") || same(args[0], "pt")) {
@@ -189,4 +204,8 @@ bool World::getInput(vector<string>& args) {
 	}
 
 	return ret;
+}
+
+bool World::playerAlive() {
+	return (player->getState() != DEAD);
 }

@@ -14,8 +14,8 @@ Entity::~Entity() {
 
 }
 
-void Entity::Update() {
-
+bool Entity::Update(float frameTime) {
+	return false;
 }
 
 void Entity::look() const {

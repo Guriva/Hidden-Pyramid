@@ -8,6 +8,7 @@
 #include "requirements.h"
 #include "morse.h"
 #include "bottlePuzzle.h"
+#include "mummy.h"
 #include "globals.h"
 
 Player::Player(const char* name, const char* description, Room* room) :
@@ -15,18 +16,37 @@ Player::Player(const char* name, const char* description, Room* room) :
 
 	type = PLAYER;
 	statePlayer = WAITING;
-	healthPoints = 10;
+	healthPoints = 9;
 	maxHealth = 10;
 	maxInventory = 3;
-	enemy = false;
+	cdAvoid = 6.f;
+	cdAvoidLeft = 6.f;
+	cdAvoidTime = 2.f;
+	cdAvoidTimeLeft = 2.f;
 }
 
 Player::~Player() {
 
 }
 
-void Player::Update() {
+bool Player::Update(float frameTime) {
+	if (inCombat) {
+		if (cdAvoidLeft > 0.f)
+			cdAvoidLeft -= frameTime;
+		if (avoiding && cdAvoidTimeLeft > 0.f)
+			cdAvoidTimeLeft -= frameTime;
+		if (cdAvoidTimeLeft <= 0.f) {
+			avoiding = false;
+			cdAvoidTimeLeft = cdAvoidTime;
+			cout << "\nYou lose your focus to avoid the next attack" << endl;
+			return true;
+		}
+	}
 
+	if (isAlive() == false) {
+		statePlayer = DEAD;
+	}
+	return false;
 }
 
 bool Player::look(const vector<string>& args) const {
@@ -145,17 +165,21 @@ bool Player::use(const vector<string>& args) {
 	for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend(); ++it) {
 		if ((*it)->type == ITEM && ((Item*)(*it))->itemType == USABLE && same(args[1],(*it)->name)) {
 			ret = true;
-			if (((Item*)(*it))->useItem(this))
+			if (((Item*)(*it))->useItem(this)) {
 				(*it)->newParent(nullptr);
+				return true;
+			}	
 		}
 
 		// Look in your backpack too
-		else if ((*it)->type == CONTAINER) {
+		else if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
 			for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
 				if ((*it2)->type == ITEM && ((Item*)(*it2))->itemType == USABLE && same(args[1], (*it2)->name)) {
 					ret = true;
-					if (((Item*)(*it2))->useItem(this))
+					if (((Item*)(*it2))->useItem(this)) {
 						(*it2)->newParent(nullptr);
+						return true;
+					}
 				}
 			}
 		}
@@ -168,6 +192,97 @@ bool Player::use(const vector<string>& args) {
 }
 
 bool Player::attack(const vector<string>& args) {
+
+	if (args.size() == 4 && same(args[2], "with")) {
+		Item* item = nullptr;
+		//look for the weapon
+		for (list<Entity*>::const_iterator it = entitiesInside.begin(); it != entitiesInside.cend() && item == nullptr; ++it) {
+			if ((*it)->type == ITEM && ((Item*)(*it))->itemType == WEAPON && same(args[3],(*it)->name))
+				item = (Item*)(*it);
+			else if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
+				for (list<Entity*>::const_iterator it2 = (*it)->entitiesInside.begin(); it2 != (*it)->entitiesInside.cend(); ++it2) {
+					if ((*it2)->type == ITEM && ((Item*)(*it2))->itemType == WEAPON && same(args[3], (*it2)->name))
+						item = (Item*)(*it2);
+				}
+			}
+		}
+
+		if (item == nullptr) {
+			cout << "You don't have that item!" << endl;
+			return false;
+		}
+
+		Creature* creature = nullptr;
+
+		for (list<Entity*>::const_iterator it = parent->entitiesInside.begin(); it != parent->entitiesInside.cend() && creature == nullptr; ++it) {
+			if ((*it)->type == CREATURE && same(args[1], (*it)->name))
+				creature = (Creature*)(*it);
+		}
+
+		if (creature == nullptr) {
+			cout << "You can't see such a creature around here" << endl;
+			return false;
+		}
+		if (creature->isAlive() == false) {
+			cout << "That creature is dead" << endl;
+			return false;
+		}
+		else {
+			if (target->inCombat == false) {
+				target = creature;
+				target->inCombat = true;
+				inCombat = true;
+				target->target = this;
+			}
+			if (target->avoiding == true) {
+				cout << "You cannot reach the target to attack it!" << endl;
+				return false;
+			}
+			if (same(item->name, "lantern") && same(target->name, "mummy") && ((Mummy*)target)->blind == false) {
+				((Mummy*)target)->increaseMinCdAttack();
+				((Mummy*)target)->blind = true;
+				cout << "You use the lantern against the mummy, and it makes their attacks more predictable" << endl;
+			}
+			else if (same(item->name, "knife")) {
+				target->healthPoints -= 2;
+				cout << "You attack " << target->name << " with a knife dealing some damage" << endl;
+			}
+			else if (same(item->name, "stick")) {
+				target->healthPoints -= 1;
+				cout << "You attack " << target->name << " with a stick, dealing minor damage" << endl;
+			}
+			else {
+				cout << "You cannot attack with this item to this creature!" << endl;
+				return false;
+			}
+			if (target->isAlive() == false) {
+				cout << "You killed the " << target->name << endl;
+				target = nullptr;
+				inCombat = false;
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Player::avoid(const vector<string>& args) {
+	if (cdAvoidLeft <= 0.f && avoiding == false) {
+		avoiding = true;
+		cdAvoidLeft = cdAvoid;
+		cout << "You prepare to avoid the next attack" << endl;
+		return true;
+	}
+	else {
+		if (avoiding == true) {
+			cout << "You are already prepared to avoid" << endl;
+			return false;
+		}
+		else {
+			cout << "You must relax before preparing to avoid an attack" << endl;
+			return false;
+		}
+	}
 	return false;
 }
 
@@ -443,16 +558,15 @@ void Player::status() const {
 		cout << "You don't have any injuries. You are completely fine." << endl;
 		return;
 	}
-	if (healthPoints > 7) {
+	if (healthPoints > 6) {
 		cout << "You only have some scratches, but nothing important" << endl;
 		return;
 	}
-	if (healthPoints > 5) {
+	if (healthPoints > 3) {
 		cout << "You have some injuries, take care." << endl;
 		return;
 	}
-
-	if (healthPoints < 3) {
+	if (healthPoints > 0) {
 		cout << "You almost cannot stand it, you need some bandaje right now!" << endl;
 		return;
 	}

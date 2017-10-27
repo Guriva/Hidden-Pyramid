@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -15,11 +16,13 @@ public:
 	World();
 	~World();
 	bool Update(vector<string>& args);
-	void entitiesUpdate();
+	bool entitiesUpdate();
 	bool getInput(vector<string>& args);
+	bool playerAlive();
 private:
 	vector<Entity*> entities;
 	Player* player = nullptr;
+	clock_t prevTime;
 };
 
 #endif //__World__

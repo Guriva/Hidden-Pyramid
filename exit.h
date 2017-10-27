@@ -18,7 +18,6 @@ class Exit : public Entity {
 public:
 	Exit(const char* name, const char* secondRoomExit, const char* description, const char* secondDescr, Room* source, Room* destination, exitData eData);
 	~Exit();
-	void Update();
 	void look(const Room* room) const;
 	bool isClosed();
 	bool hasPuzzle();
