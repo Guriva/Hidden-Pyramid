@@ -23,7 +23,7 @@ public:
 
 public:
 	PType puzzleType;
-	bool solved;
+	bool solved = false;
 };
 
 #endif //__Puzzle__

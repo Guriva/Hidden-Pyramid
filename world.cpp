@@ -7,6 +7,7 @@
 #include "item.h"
 #include "requirements.h"
 #include "morse.h"
+#include "bottlePuzzle.h"
 #include "globals.h"
 
 World::World() {
@@ -26,7 +27,7 @@ World::World() {
 	entities.push_back(shelf);
 
 	/*** Usables ***/
-	Item* lantern = new Item("Lantern", "A lantern on the desk. It could be useful for something,... or not.",home,nullptr,nullptr,USABLE);
+	Item* lantern = new Item("Lantern", "A lantern on the desk. It could be useful for something,... or not.",home,nullptr,nullptr,WEAPON);
 	Item* bandaje = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.",drawer,nullptr,nullptr,USABLE);
 	Item* book = new Item("Book", "In the title it says \"Morse Code\". You can see some letters here: C-.-., E., L.-.., P.--., R.-., S..., T-, U..-, Z--..",shelf,nullptr,nullptr,USABLE);
 	entities.push_back(lantern);
@@ -43,7 +44,8 @@ World::World() {
 	req1->addRequirement(lantern);
 	entities.push_back(req1);
 	Morse* morse1 = new Morse("A strange code","It says: .--.|..-|--..|--..|.-..|.",MORSE,"puzzle");
-	drawer->setPuzzle(morse1);
+	BottlePuzzle* bottleP1 = new BottlePuzzle("Some kind of platforms","There are some platforms and some bottles, they must serve for something.",BOTTLES,4,5);
+	drawer->setPuzzle(bottleP1);
 
 	/*** Exits ***/
 	exitData eDataEx1;

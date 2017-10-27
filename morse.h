@@ -16,4 +16,4 @@ private:
 	string answerCode;
 };
 
-#endif //__Requirements__
+#endif //__Morse__

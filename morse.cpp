@@ -4,7 +4,7 @@
 
 Morse::Morse(const char* name, const char* description, PType puzzleType, string answerCode) :
 Puzzle(name,description,puzzleType), answerCode(answerCode) {
-
+	
 }
 
 Morse::~Morse() {
