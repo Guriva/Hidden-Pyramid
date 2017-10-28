@@ -54,7 +54,7 @@ bool Scorpion::Update(float frameTime) {
 			else if (cdAvoidLeft <= 0.f && avoiding == false) {
 				avoiding = true;
 				cdAvoidLeft = cdAvoid;
-				cout << "\nThe snake covers behind a rock, making it too dangerous to attack her right now" << endl;
+				cout << "\nThe scorpion covers behind a rock, making it too dangerous to attack him right now" << endl;
 				return true;
 			}
 			else if (cdAvoidTimeLeft <= 0.f) {
@@ -89,9 +89,9 @@ void Scorpion::updateCds() {
 void Scorpion::attack() {
 	if (((Player*)target)->avoiding == false) {
 		target->healthPoints -= damage;
-		cout << "\nThe snake bites you, ouch!" << endl;
+		cout << "\nThe scorpion hits you with his tail!" << endl;
 	}
 	else {
-		cout << "\nThe snake tries to bite you, but you avoid the attack" << endl;
+		cout << "\nThe tries to pick you with his tail, but you avoid the attack" << endl;
 	}
 }

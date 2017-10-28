@@ -31,7 +31,6 @@ void Room::look() const {
 				cout << endl;
 			}
 			else {
-				cout << ", ";
 				lookThing((*it));
 				cout << endl;
 			}
