@@ -124,6 +124,7 @@
     <ClCompile Include="puzzle.cpp" />
     <ClCompile Include="requirements.cpp" />
     <ClCompile Include="room.cpp" />
+    <ClCompile Include="scorpion.cpp" />
     <ClCompile Include="snake.cpp" />
     <ClCompile Include="world.cpp" />
   </ItemGroup>
@@ -140,6 +141,7 @@
     <ClInclude Include="puzzle.h" />
     <ClInclude Include="requirements.h" />
     <ClInclude Include="room.h" />
+    <ClInclude Include="scorpion.h" />
     <ClInclude Include="snake.h" />
     <ClInclude Include="world.h" />
   </ItemGroup>

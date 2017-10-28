@@ -6,7 +6,7 @@
 class Mummy : public Creature {
 
 public:
-	Mummy(const char* name, const char* description, Room* room, bool autoRespawn = false);
+	Mummy(const char* name, const char* description, Entity* entity, bool autoRespawn = false);
 	~Mummy();
 	bool Update(float frameTime);
 	void updateCds();

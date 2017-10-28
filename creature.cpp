@@ -2,7 +2,7 @@
 #include "creature.h"
 #include "room.h"
 
-Creature::Creature(const char* name, const char* description, Room* room) :
+Creature::Creature(const char* name, const char* description, Entity* room) :
 	Entity(name, description, (Entity*)room) {
 
 	type = CREATURE;

@@ -267,22 +267,25 @@ bool Player::attack(const vector<string>& args) {
 }
 
 bool Player::avoid(const vector<string>& args) {
-	if (cdAvoidLeft <= 0.f && avoiding == false) {
-		avoiding = true;
-		cdAvoidLeft = cdAvoid;
-		cout << "You prepare to avoid the next attack" << endl;
-		return true;
-	}
-	else {
-		if (avoiding == true) {
-			cout << "You are already prepared to avoid" << endl;
-			return false;
+	if (inCombat == true) {
+		if (cdAvoidLeft <= 0.f && avoiding == false) {
+			avoiding = true;
+			cdAvoidLeft = cdAvoid;
+			cout << "You prepare to avoid the next attack" << endl;
+			return true;
 		}
 		else {
-			cout << "You must relax before preparing to avoid an attack" << endl;
-			return false;
+			if (avoiding == true) {
+				cout << "You are already prepared to avoid" << endl;
+				return false;
+			}
+			else {
+				cout << "You must relax before preparing to avoid an attack" << endl;
+				return false;
+			}
 		}
 	}
+	cout << "You are not in combat" << endl;
 	return false;
 }
 

@@ -8,7 +8,7 @@ class Room;
 class Creature : public Entity {
 
 public:
-	Creature(const char* name, const char* description, Room* room);
+	Creature(const char* name, const char* description, Entity* room);
 	~Creature();
 	virtual bool Update(float frameTime);
 	virtual bool look(const vector<string>& args) const;

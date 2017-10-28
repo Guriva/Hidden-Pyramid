@@ -1,17 +1,17 @@
-#ifndef __Snake__
-#define __Snake__
+#ifndef __Scorpion__
+#define __Scorpion__
 
 #include "creature.h"
 
-class Snake : public Creature {
+class Scorpion : public Creature {
 
 public:
-	Snake(const char* name, const char* description, Entity* entity, bool autoRespawn = false);
-	~Snake();
+	Scorpion(const char* name, const char* description, Entity* entity, bool autoRespawn = false);
+	~Scorpion();
 	bool Update(float frameTime);
 	void updateCds();
 	void attack();
-	
+
 private:
 	int damage;
 	bool autoRespawn;
@@ -20,4 +20,4 @@ private:
 	float frameTime;
 };
 
-#endif //__Snake__
+#endif //__Scorpion__

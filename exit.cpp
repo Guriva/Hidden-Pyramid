@@ -4,7 +4,7 @@
 #include "puzzle.h"
 #include "globals.h"
 
-Exit::Exit(const char* name, const char* secondRoomExit, const char* description,const char* secondDescr, Room* source, Room* destination, exitData eData) :
+Exit::Exit(const char* name, const char* secondRoomExit, const char* description,const char* secondDescr, Room* source, Room* destination, const exitData& eData) :
 	Entity(name, description, (Entity*)source), destination(destination), secondRoomExit(secondRoomExit),
 	secondDescription(secondDescr), key(eData.key), puzzle(eData.puzzle), locked(false), onlyPassOnce(eData.onlyPassOnce) {
 

@@ -2,20 +2,20 @@
 #include "mummy.h"
 #include "player.h"
 
-Mummy::Mummy(const char* name, const char* description, Room* room, bool autoRespawn) :
-	Creature(name, description, room), autoRespawn(autoRespawn) {
+Mummy::Mummy(const char* name, const char* description, Entity* entity, bool autoRespawn) :
+	Creature(name, description, entity), autoRespawn(autoRespawn) {
 
 	type = CREATURE;
-	healthPoints = 10;
-	maxHealth = 10;
+	healthPoints = 25;
+	maxHealth = 25;
 
-	damage = 1;
+	damage = 2;
 	avoiding = false;
 	blind = false;
-	cdAvoid = 15.f;
-	cdAvoidLeft = 15.f;
-	cdAvoidTime = 1.5f;
-	cdAvoidTimeLeft = 1.5f;
+	cdAvoid = 20.f;
+	cdAvoidLeft = 20.f;
+	cdAvoidTime = 3.f;
+	cdAvoidTimeLeft = 3.f;
 	minCdAttack = 5.f;
 	maxCdAttack = 10.f;
 	cdAttack = minCdAttack + (((float)rand()) / (float)RAND_MAX) * (maxCdAttack - minCdAttack);

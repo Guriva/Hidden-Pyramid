@@ -1,32 +1,32 @@
 #include <iostream>
-#include "snake.h"
+#include "scorpion.h"
 #include "player.h"
 
-Snake::Snake(const char* name, const char* description, Entity* entity, bool autoRespawn) :
+Scorpion::Scorpion(const char* name, const char* description, Entity* entity, bool autoRespawn) :
 	Creature(name, description, entity), autoRespawn(autoRespawn) {
 
 	type = CREATURE;
-	healthPoints = 10;
-	maxHealth = 10;
+	healthPoints = 15;
+	maxHealth = 15;
 
 	damage = 1;
 	avoiding = false;
-	cdAvoid = 15.f;
-	cdAvoidLeft = 15.f;
-	cdAvoidTime = 1.5f;
-	cdAvoidTimeLeft = 1.5f;
-	minCdAttack = 7.f;
-	maxCdAttack = 8.f;
+	cdAvoid = 10.f;
+	cdAvoidLeft = 10.f;
+	cdAvoidTime = 1.0f;
+	cdAvoidTimeLeft = 1.0f;
+	minCdAttack = 10.f;
+	maxCdAttack = 12.f;
 	cdAttack = minCdAttack + (((float)rand()) / (float)RAND_MAX) * (maxCdAttack - minCdAttack);
 	cdAttackLeft = cdAttack;
 	frameTime = 0.f;
 }
 
-Snake::~Snake() {
+Scorpion::~Scorpion() {
 
 }
 
-bool Snake::Update(float frameTime) {
+bool Scorpion::Update(float frameTime) {
 	this->frameTime = frameTime;
 	if (isAlive() == true) {
 		target = findPlayer(parent);
@@ -77,7 +77,7 @@ bool Snake::Update(float frameTime) {
 	return false;
 }
 
-void Snake::updateCds() {
+void Scorpion::updateCds() {
 	if (cdAvoidLeft > 0.f)
 		cdAvoidLeft -= frameTime;
 	if (avoiding && cdAvoidTimeLeft > 0.f)
@@ -86,7 +86,7 @@ void Snake::updateCds() {
 		cdAttackLeft -= frameTime;
 }
 
-void Snake::attack() {
+void Scorpion::attack() {
 	if (((Player*)target)->avoiding == false) {
 		target->healthPoints -= damage;
 		cout << "\nThe snake bites you, ouch!" << endl;
