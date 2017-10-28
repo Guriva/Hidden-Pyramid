@@ -65,7 +65,7 @@ World::World() {
 	Item* bandaje4 = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.", chest, nullptr, nullptr, USABLE);
 	Item* bandaje5 = new Item("Bandaje", "A short bandaje which you can use to heal yourself..., or use it as a pirate patch.", chest, nullptr, nullptr, USABLE);
 	Item* book = new Item("Book", "In the title it says \"Morse Code\". You can see some letters here: C-.-., E., L.-.., P.--., R.-., S..., T-, U..-, Z--..",shelf,nullptr,nullptr,USABLE);
-	Item* key1 = new Item("Key", "An old and rusty key, maybe it is for the entrance", rock1, nullptr, nullptr, USABLE);
+	Item* key1 = new Item("Key", "An old and rusty key", rock1, nullptr, nullptr, USABLE);
 	Item* treasure = new Item("Treasure", "It's a treasure! It contains a lot of gems and money. You are rich!",treasureChest,nullptr,nullptr,USABLE);
 	entities.push_back(bandaje);
 	entities.push_back(bandaje2);
@@ -116,25 +116,25 @@ World::World() {
 
 	eData.key = nullptr;
 	eData.ignoreDestination = true;
-	Exit* exit5 = new Exit("east","","Above the door there's engraved: |||","",labyrinth1,labyrinth1,eData);
-	Exit* exit6 = new Exit("south", "", "Above the door there's engraved: ||", "", labyrinth1, labyrinth1, eData);
-	Exit* exit7 = new Exit("north", "", "Above the door there's engraved: ||||", "", labyrinth1, labyrinth2, eData);
+	Exit* exit5 = new Exit("east","","Above the door to the east there's engraved: |||","",labyrinth1,labyrinth1,eData);
+	Exit* exit6 = new Exit("south", "", "Above the door to the south there's engraved: ||", "", labyrinth1, labyrinth1, eData);
+	Exit* exit7 = new Exit("north", "", "Above the door to the north there's engraved: ||||", "", labyrinth1, labyrinth2, eData);
 
-	Exit* exit8 = new Exit("north", "", "Above the door there's engraved: ||||", "", labyrinth2, labyrinth1, eData);
-	Exit* exit9 = new Exit("east", "", "Above the door there's engraved: |||", "", labyrinth2, labyrinth1, eData);
-	Exit* exit10 = new Exit("south", "", "Above the door there's engraved: ||", "", labyrinth2, labyrinth3, eData);
-	Exit* exit11 = new Exit("west", "", "Above the door there's a human face engraved on the wall. His two eyes are very big, and the one in the left is shining.", "", labyrinth2, entrance, eData);
+	Exit* exit8 = new Exit("north", "", "Above the door to the north there's engraved: ||||", "", labyrinth2, labyrinth1, eData);
+	Exit* exit9 = new Exit("east", "", "Above the door to the east there's engraved: |||", "", labyrinth2, labyrinth1, eData);
+	Exit* exit10 = new Exit("south", "", "Above the door to the south there's engraved: ||", "", labyrinth2, labyrinth3, eData);
+	Exit* exit11 = new Exit("west", "", "Above the door the west there's a human face engraved on the wall. His two eyes are very big, and the one in the left is shining.", "", labyrinth2, entrance, eData);
 
-	Exit* exit12 = new Exit("north", "", "Above the door there's engraved: ||||", "", labyrinth3, labyrinth1, eData);
-	Exit* exit13 = new Exit("south", "", "Above the door there's engraved: ||", "", labyrinth3, labyrinth1, eData);
-	Exit* exit14 = new Exit("east", "", "Above the door there's engraved: |||", "", labyrinth3, antechamber, eData);
-	Exit* exit15 = new Exit("west", "", "Above the door there's a human face engraved on the wall. His two eyes are very big, and the two eyes are shining.", "", labyrinth3, entrance, eData);
+	Exit* exit12 = new Exit("north", "", "Above the door to the north there's engraved: ||||", "", labyrinth3, labyrinth1, eData);
+	Exit* exit13 = new Exit("south", "", "Above the door to the south there's engraved: ||", "", labyrinth3, labyrinth1, eData);
+	Exit* exit14 = new Exit("east", "", "Above the door to the east there's engraved: |||", "", labyrinth3, antechamber, eData);
+	Exit* exit15 = new Exit("west", "", "Above the door to the west there's a human face engraved on the wall. His two eyes are very big, and the two eyes are shining.", "", labyrinth3, entrance, eData);
 
-	Exit* exit16 = new Exit("west","","This passage may lead to the first room of the pyramid, think before going back.","",antechamber,labyrinth1,eData);
+	Exit* exit16 = new Exit("west","","This passage to the west may lead to the first room of the pyramid, think before going back.","",antechamber,labyrinth1,eData);
 
 	eData.puzzle = bottleP1;
 	eData.ignoreDestination = false;
-	Exit* exit17 = new Exit("east","west","This passage leads to the pharaon tomb chamber","This passage leads to the antechamber room",antechamber,pharaonroom,eData);
+	Exit* exit17 = new Exit("east","west","This passage to the east leads to the pharaon tomb chamber","This passage leads to the antechamber room",antechamber,pharaonroom,eData);
 	entities.push_back(exit1);
 	entities.push_back(exit2);
 	entities.push_back(exit3);

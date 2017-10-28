@@ -28,10 +28,12 @@ void Room::look() const {
 				cout << "Exits here: ";
 				lookThing((*it));
 				first = false;
+				cout << endl;
 			}
 			else {
 				cout << ", ";
 				lookThing((*it));
+				cout << endl;
 			}
 		}
 	}
