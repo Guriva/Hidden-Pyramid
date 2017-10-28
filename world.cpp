@@ -305,3 +305,7 @@ bool World::getInput(vector<string>& args) {
 bool World::playerAlive() {
 	return (player->getState() != DEAD);
 }
+
+bool World::playerWon() {
+	return (player->getState() == WIN);
+}

@@ -25,7 +25,7 @@ int main() {
 
 	args.push_back("look");
 
-	while (world.playerAlive()) {
+	while (world.playerAlive() || world.playerWon() == false) {
 		if (_kbhit() != 0) {
 			input = _getch();
 			if (input == '\b') {
@@ -65,6 +65,10 @@ int main() {
 
 	if (world.playerAlive() == false) {
 		cout << "You have died before exploring all the pyramid :(" << endl;
+	}
+
+	else if (world.playerWon()) {
+		cout << "You come back through all the rooms with the treasure in hand. Now you are rich and you can do whatever you want!" << endl;
 	}
 
 	cout << "Thanks for playing!" << endl;

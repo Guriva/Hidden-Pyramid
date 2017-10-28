@@ -12,7 +12,8 @@ enum PState {
 	WAITING,
 	SOLVING,
 	EVADING,
-	DEAD
+	DEAD,
+	WIN
 };
 
 class Player : public Creature {

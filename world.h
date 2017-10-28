@@ -19,6 +19,7 @@ public:
 	bool entitiesUpdate();
 	bool getInput(vector<string>& args);
 	bool playerAlive();
+	bool playerWon();
 private:
 	vector<Entity*> entities;
 	Player* player = nullptr;

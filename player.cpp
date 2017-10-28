@@ -350,6 +350,8 @@ bool Player::take(const vector<string>& args) {
 		else {
 			cout << "You have taken " << item->name << endl;
 			item->newParent(this);
+			if (same(item->name, "Treasure"))
+				statePlayer = WIN;
 		}
 	}
 	else if (args.size() == 4)
@@ -394,6 +396,8 @@ bool Player::take(const vector<string>& args) {
 				if ((*it)->type == ITEM && ((Item*)(*it))->itemType == CONTAINER) {
 					cout << "You have taken " << item->name << " and put it inside the " << (*it)->name << endl;
 					item->newParent((*it));
+					if (same(item->name, "Treasure"))
+						statePlayer = WIN;
 					return true;
 				}
 			}
@@ -402,6 +406,8 @@ bool Player::take(const vector<string>& args) {
 		}
 		else {
 			cout << "You have taken " << item->name << endl;
+			if (same(item->name, "Treasure"))
+				statePlayer = WIN;
 			item->newParent(this);
 		}
 	}
