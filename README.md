@@ -43,7 +43,7 @@ A list of the commands you can use in the game.
 Link to the map [here](https://github.com/Nyghor/Hidden-Pyramid/wiki/Map).
 
 ## Need Help?
-Here you can find a guide of the game.
+[Here](https://github.com/Nyghor/Hidden-Pyramid/wiki/Guide) you can find a guide of the game.
 
 ## Link to github
 [Here](https://github.com/Nyghor/Hidden-Pyramid).
