@@ -203,7 +203,7 @@ bool World::entitiesUpdate() {
 
 bool World::getInput(vector<string>& args) {
 	bool ret = true;
-	if (player->getState() == WAITING) {
+	if (player->statePlayer == WAITING) {
 		switch (args.size()) {
 			case 1:
 			{
@@ -295,17 +295,17 @@ bool World::getInput(vector<string>& args) {
 		}
 	}
 
-	else if (player->getState() == SOLVING) {
+	else if (player->statePlayer == SOLVING) {
 		player->solve(args);
 	}
 
 	return ret;
 }
 
-bool World::playerAlive() {
-	return (player->getState() != DEAD);
+bool World::playerAlive() const {
+	return (player->statePlayer != DEAD);
 }
 
-bool World::playerWon() {
-	return (player->getState() == WIN);
+bool World::playerWon() const {
+	return (player->statePlayer == WIN);
 }

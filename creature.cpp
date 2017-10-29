@@ -3,7 +3,7 @@
 #include "room.h"
 
 Creature::Creature(const char* name, const char* description, Entity* room) :
-	Entity(name, description, (Entity*)room) {
+	Entity(name, description, room) {
 
 	type = CREATURE;
 	healthPoints = 10;
@@ -15,7 +15,7 @@ Creature::~Creature() {
 
 }
 
-bool Creature::Update(float frameTime) {
+bool Creature::Update(const float& frameTime) {
 	return false;
 }
 
@@ -31,31 +31,7 @@ bool Creature::look(const vector<string>& args) const {
 	return true;
 }
 
-bool Creature::move(const vector<string>& args) {
-	return false;
-}
-
-bool Creature::use(const vector<string>& args) {
-	return false;
-}
-
 bool Creature::attack(const vector<string>& args) {
-	return false;
-}
-
-bool Creature::drop(const vector<string>& args) {
-	return false;
-}
-
-bool Creature::take(const vector<string>& args) {
-	return false;
-}
-
-bool Creature::put(const vector<string>& args) {
-	return false;
-}
-
-bool Creature::unlock(const vector<string>& args) {
 	return false;
 }
 
@@ -68,23 +44,11 @@ void Creature::status() const {
 	}
 }
 
-void Creature::inventory() const {
-
-}
-
-Room* Creature::getRoom() const {
-	return (Room*)parent;
-}
-
-int Creature::getHealth() const {
-	return healthPoints;
-}
-
 bool Creature::isAlive() const {
 	return healthPoints > 0;
 }
 
-Creature* Creature::findPlayer(Entity* entity) {
+Creature* Creature::findPlayer(const Entity* entity) const {
 	Creature* creature = nullptr;
 	for (list<Entity*>::const_iterator it = entity->entitiesInside.begin(); it != entity->entitiesInside.cend() && creature == nullptr; ++it) {
 		if ((*it)->type == PLAYER) {

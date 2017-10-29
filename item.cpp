@@ -4,11 +4,11 @@
 #include "creature.h"
 #include "globals.h"
 
-Item::Item(const char* name, const char* description, Entity* entity, Entity* key, Puzzle* puzzle, IType itemType, const bool carriable) :
+Item::Item(const char* name, const char* description, Entity* entity, Entity* key, Puzzle* puzzle, const IType& itemType, const bool& carriable) :
 	Entity(name,description, (Entity*)entity), key(key), puzzle(puzzle), locked(false), itemType(itemType), carriable(carriable) {
 
 	type = ITEM;
-	if (key != nullptr || (puzzle != nullptr && !puzzle->isSolved())) {
+	if (key != nullptr || (puzzle != nullptr && puzzle->solved == false)) {
 		locked = true;
 	}
 	moved = false;
@@ -27,23 +27,13 @@ void Item::look() const {
 	}
 }
 
-Entity* Item::containedIn() const {
-	return parent;
-}
-
 void Item::setPuzzle(Puzzle* p) {
 	puzzle = p;
-	if (puzzle->isSolved() == false && locked == false)
+	if (puzzle->solved == false && locked == false)
 		locked = true;
 }
 
-void Item::setKey(Item* item) {
-	key = item;
-	if (locked == false)
-		locked = true;
-}
-
-bool Item::useItem(Creature* entity) {
+bool Item::useItem(Creature* entity) const {
 	if (same(this->name, "bandaje")) {
 		if (entity->healthPoints < entity->maxHealth) {
 			entity->healthPoints += 1;

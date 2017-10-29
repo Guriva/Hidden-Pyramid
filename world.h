@@ -18,8 +18,8 @@ public:
 	bool Update(vector<string>& args);
 	bool entitiesUpdate();
 	bool getInput(vector<string>& args);
-	bool playerAlive();
-	bool playerWon();
+	bool playerAlive() const;
+	bool playerWon() const;
 private:
 	vector<Entity*> entities;
 	Player* player = nullptr;

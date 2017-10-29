@@ -2,12 +2,12 @@
 #include "mummy.h"
 #include "player.h"
 
-Mummy::Mummy(const char* name, const char* description, Entity* entity, bool autoRespawn) :
+Mummy::Mummy(const char* name, const char* description, Entity* entity, const bool& autoRespawn) :
 	Creature(name, description, entity), autoRespawn(autoRespawn) {
 
 	type = CREATURE;
-	healthPoints = 25;
-	maxHealth = 25;
+	healthPoints = 15;
+	maxHealth = 15;
 
 	damage = 2;
 	avoiding = false;
@@ -27,7 +27,7 @@ Mummy::~Mummy() {
 
 }
 
-bool Mummy::Update(float frameTime) {
+bool Mummy::Update(const float& frameTime) {
 	this->frameTime = frameTime;
 	if (isAlive() == true) {
 		target = findPlayer(parent);
@@ -87,7 +87,7 @@ void Mummy::updateCds() {
 		cdAttackLeft -= frameTime;
 }
 
-void Mummy::attack() {
+void Mummy::attack() const {
 	if (((Player*)target)->avoiding == false) {
 		target->healthPoints -= damage;
 		cout << "\nThe mummy gives you a punch, ouch!" << endl;

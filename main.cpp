@@ -25,7 +25,7 @@ int main() {
 
 	args.push_back("look");
 
-	while (world.playerAlive() || world.playerWon() == false) {
+	while (world.playerAlive() == true && world.playerWon() == false) {
 		if (_kbhit() != 0) {
 			input = _getch();
 			if (input == '\b') {

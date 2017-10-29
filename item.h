@@ -17,13 +17,11 @@ enum IType {
 class Item : public Entity {
 
 public:
-	Item(const char* name, const char* description, Entity* entity, Entity* key, Puzzle* puzzle, IType itemType, const bool carriable = true);
+	Item(const char* name, const char* description, Entity* entity, Entity* key, Puzzle* puzzle, const IType& itemType, const bool& carriable = true);
 	~Item();
 	void look() const override;
-	Entity* containedIn() const;
 	void setPuzzle(Puzzle* p);
-	void setKey(Item* item);
-	bool useItem(Creature* entity);
+	bool useItem(Creature* entity) const;
 	void effectMovable();
 
 public:

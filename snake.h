@@ -6,11 +6,11 @@
 class Snake : public Creature {
 
 public:
-	Snake(const char* name, const char* description, Entity* entity, bool autoRespawn = false);
+	Snake(const char* name, const char* description, Entity* entity, const bool& autoRespawn = false);
 	~Snake();
-	bool Update(float frameTime);
+	bool Update(const float& frameTime) override;
 	void updateCds();
-	void attack();
+	void attack() const;
 	
 private:
 	int damage;

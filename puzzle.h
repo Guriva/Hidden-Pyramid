@@ -14,12 +14,11 @@ enum PType {
 class Puzzle : public Entity {
 
 public:
-	Puzzle(const char* name, const char* description, PType puzzleType);
+	Puzzle(const char* name, const char* description, const PType& puzzleType);
 	~Puzzle();
 	virtual void look() const;
 	virtual bool checkAnswer(const vector<string>& args);
-	virtual void unlockRules();
-	bool isSolved() const;
+	virtual void unlockRules() const;
 
 public:
 	PType puzzleType;

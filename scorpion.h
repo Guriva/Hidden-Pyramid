@@ -6,11 +6,11 @@
 class Scorpion : public Creature {
 
 public:
-	Scorpion(const char* name, const char* description, Entity* entity, bool autoRespawn = false);
+	Scorpion(const char* name, const char* description, Entity* entity, const bool& autoRespawn = false);
 	~Scorpion();
-	bool Update(float frameTime);
+	bool Update(const float& frameTime) override;
 	void updateCds();
-	void attack();
+	void attack() const;
 
 private:
 	int damage;

@@ -23,9 +23,10 @@ class Entity {
 public:
 	Entity(const char* name, const char* description, Entity* parent);
 	virtual ~Entity();
-	virtual bool Update(float frameTime);
+	virtual bool Update(const float& frameTime);
 	virtual void look() const;
-
+	
+	Entity* findInsideOf(Entity* e, const string& args) const;
 	void newParent(Entity* p);
 
 public:

@@ -6,11 +6,11 @@
 class Mummy : public Creature {
 
 public:
-	Mummy(const char* name, const char* description, Entity* entity, bool autoRespawn = false);
+	Mummy(const char* name, const char* description, Entity* entity, const bool& autoRespawn = false);
 	~Mummy();
-	bool Update(float frameTime);
+	bool Update(const float& frameTime) override;
 	void updateCds();
-	void attack();
+	void attack() const;
 	void increaseMinCdAttack();
 
 public:

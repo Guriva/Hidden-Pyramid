@@ -6,11 +6,11 @@
 class Morse : public Puzzle {
 
 public:
-	Morse(const char* name, const char* description, PType puzzleType, string answerCode);
+	Morse(const char* name, const char* description, const PType& puzzleType, const string& answerCode);
 	~Morse();
-	void look() const;
-	bool checkAnswer(const vector<string>& args);
-	void unlockRules();
+	void look() const override;
+	bool checkAnswer(const vector<string>& args) override;
+	void unlockRules() const override;
 
 private:
 	string answerCode;

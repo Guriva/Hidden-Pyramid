@@ -6,12 +6,14 @@
 class BottlePuzzle : public Puzzle {
 
 public:
-	BottlePuzzle(const char* name, const char* description, PType puzzleType, int numberBottles, int chances);
+	BottlePuzzle(const char* name, const char* description, const PType& puzzleType, int numberBottles, const int& chances);
 	~BottlePuzzle();
-	void look() const;
-	bool checkAnswer(const vector<string>& args);
-	void unlockRules();
-	bool validBottle(const string& bottle);
+	void look() const override;
+	bool checkAnswer(const vector<string>& args) override;
+	void unlockRules() const override;
+
+private:
+	bool validBottle(const string& bottle) const;
 	void reorderBottles();
 
 private:

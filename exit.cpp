@@ -13,7 +13,7 @@ Exit::Exit(const char* name, const char* secondRoomExit, const char* description
 		destination->entitiesInside.push_back(this);
 	}
 
-	if (key != nullptr || (puzzle != nullptr && !puzzle->isSolved())) {
+	if (key != nullptr || (puzzle != nullptr && puzzle->solved == false)) {
 		locked = true;
 	}
 }
@@ -32,46 +32,6 @@ void Exit::look(const Room* room) const {
 	}
 }
 
-bool Exit::isClosed() {
-	return locked;
-}
-
-bool Exit::hasPuzzle() {
-	return (puzzle != nullptr);
-}
-
-bool Exit::puzzleSolved() {
-	return (puzzle->isSolved());
-}
-
-void Exit::lookPuzzle() {
-	puzzle->look();
-}
-
-bool Exit::needsKey() {
-	return (key != nullptr);
-}
-
-bool Exit::isOneWay() {
-	return onlyPassOnce;
-}
-
-Room* Exit::getSource() const {
-	return (Room*)parent;
-}
-
-Room* Exit::getDestination() const {
-	return destination;
-}
-
-string Exit::getSecondDescr() const {
-	return secondDescription;
-}
-
 string Exit::getExitName(const Room* room) const {
 	return ((same(room->name, parent->name)) ? (name) : (secondRoomExit));
-}
-
-void Exit::setClosed(const bool b) {
-	locked = b;
 }

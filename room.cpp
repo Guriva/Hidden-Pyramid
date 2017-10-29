@@ -88,10 +88,10 @@ void Room::lookThing(const Entity* entity) const {
 	switch (entity->type) {
 		case EXIT:
 		{
-			if (same(((Exit*)entity)->getSource()->name, name))
+			if (same(((Exit*)entity)->parent->name, name))
 				cout << ((Exit*)entity)->description;
 			else
-				cout << ((Exit*)entity)->getSecondDescr();
+				cout << ((Exit*)entity)->secondDescription;
 			break;
 		}
 		case CREATURE:

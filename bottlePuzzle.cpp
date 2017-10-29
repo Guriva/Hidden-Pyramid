@@ -3,7 +3,7 @@
 #include "bottlePuzzle.h"
 #include "globals.h"
 
-BottlePuzzle::BottlePuzzle(const char* name, const char* description, PType puzzleType, int numberBottles, int chances) :
+BottlePuzzle::BottlePuzzle(const char* name, const char* description, const PType& puzzleType, int numberBottles, const int& chances) :
 	Puzzle(name, description, puzzleType), orderBottles(orderBottles), chances(chances) {
 
 	if (numberBottles > 6)
@@ -71,7 +71,7 @@ bool BottlePuzzle::checkAnswer(const vector<string>& args) {
 	return false;
 }
 
-void BottlePuzzle::unlockRules() {
+void BottlePuzzle::unlockRules() const {
 	if (orderBottles.size() == 0) {
 		cout << "It doesn't have any bottles here and cannot be solved." << endl;
 		return;
@@ -83,7 +83,7 @@ void BottlePuzzle::unlockRules() {
 	cout << "Maybe if you put them into the platforms in some order something will happen..." << endl;
 }
 
-bool BottlePuzzle::validBottle(const string& bottle) {
+bool BottlePuzzle::validBottle(const string& bottle) const {
 	for (unsigned int i = 0; i < orderBottles.size(); ++i) {
 		if (same(orderBottles[i], bottle))
 			return true;

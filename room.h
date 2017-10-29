@@ -15,8 +15,6 @@ public:
 
 private:
 	void lookThing(const Entity* entity) const;
-
-private:
 };
 
 #endif //__Room__

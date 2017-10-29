@@ -19,17 +19,7 @@ public:
 	Exit(const char* name, const char* secondRoomExit, const char* description, const char* secondDescr, Room* source, Room* destination, const exitData& eData);
 	~Exit();
 	void look(const Room* room) const;
-	bool isClosed();
-	bool hasPuzzle();
-	bool puzzleSolved();
-	void lookPuzzle();
-	bool needsKey();
-	bool isOneWay();
-	Room* getSource() const;
-	Room* getDestination() const;
-	string getSecondDescr() const;
 	string getExitName(const Room* room) const;
-	void setClosed(const bool b);
 	
 public:
 	bool locked;

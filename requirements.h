@@ -6,9 +6,9 @@
 class Requirements : public Puzzle {
 
 public:
-	Requirements(const char* name, const char* description, PType puzzleType);
+	Requirements(const char* name, const char* description, const PType& puzzleType);
 	~Requirements();
-	void look() const;
+	void look() const override;
 	void addRequirement(Entity* entity);
 
 public:

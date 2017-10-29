@@ -1,7 +1,7 @@
 #include <iostream>
 #include "requirements.h"
 
-Requirements::Requirements(const char* name, const char* description, PType puzzleType) :
+Requirements::Requirements(const char* name, const char* description, const PType& puzzleType) :
 	Puzzle(name,description,puzzleType) {
 
 	entitiesReq.reserve(10);

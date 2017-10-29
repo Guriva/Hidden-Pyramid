@@ -2,7 +2,7 @@
 #include "morse.h"
 #include "globals.h"
 
-Morse::Morse(const char* name, const char* description, PType puzzleType, string answerCode) :
+Morse::Morse(const char* name, const char* description, const PType& puzzleType, const string& answerCode) :
 Puzzle(name,description,puzzleType), answerCode(answerCode) {
 	
 }
@@ -37,6 +37,6 @@ bool Morse::checkAnswer(const vector<string>& args) {
 
 }
 
-void Morse::unlockRules() {
+void Morse::unlockRules() const {
 	cout << "This code must mean something... Say the answer if you think you know it:" << endl;
 }

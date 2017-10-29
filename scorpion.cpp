@@ -2,12 +2,12 @@
 #include "scorpion.h"
 #include "player.h"
 
-Scorpion::Scorpion(const char* name, const char* description, Entity* entity, bool autoRespawn) :
+Scorpion::Scorpion(const char* name, const char* description, Entity* entity, const bool& autoRespawn) :
 	Creature(name, description, entity), autoRespawn(autoRespawn) {
 
 	type = CREATURE;
-	healthPoints = 15;
-	maxHealth = 15;
+	healthPoints = 10;
+	maxHealth = 10;
 
 	damage = 1;
 	avoiding = false;
@@ -26,7 +26,7 @@ Scorpion::~Scorpion() {
 
 }
 
-bool Scorpion::Update(float frameTime) {
+bool Scorpion::Update(const float& frameTime) {
 	this->frameTime = frameTime;
 	if (isAlive() == true) {
 		target = findPlayer(parent);
@@ -86,7 +86,7 @@ void Scorpion::updateCds() {
 		cdAttackLeft -= frameTime;
 }
 
-void Scorpion::attack() {
+void Scorpion::attack() const {
 	if (((Player*)target)->avoiding == false) {
 		target->healthPoints -= damage;
 		cout << "\nThe scorpion hits you with his tail!" << endl;

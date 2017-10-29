@@ -2,12 +2,12 @@
 #include "snake.h"
 #include "player.h"
 
-Snake::Snake(const char* name, const char* description, Entity* entity, bool autoRespawn) :
+Snake::Snake(const char* name, const char* description, Entity* entity, const bool& autoRespawn) :
 	Creature(name, description, entity), autoRespawn(autoRespawn) {
 
 	type = CREATURE;
-	healthPoints = 10;
-	maxHealth = 10;
+	healthPoints = 5;
+	maxHealth = 5;
 
 	damage = 1;
 	avoiding = false;
@@ -26,7 +26,7 @@ Snake::~Snake() {
 
 }
 
-bool Snake::Update(float frameTime) {
+bool Snake::Update(const float& frameTime) {
 	this->frameTime = frameTime;
 	if (isAlive() == true) {
 		target = findPlayer(parent);
@@ -86,7 +86,7 @@ void Snake::updateCds() {
 		cdAttackLeft -= frameTime;
 }
 
-void Snake::attack() {
+void Snake::attack() const {
 	if (((Player*)target)->avoiding == false) {
 		target->healthPoints -= damage;
 		cout << "\nThe snake bites you, ouch!" << endl;
