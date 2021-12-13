@@ -40,13 +40,13 @@ A list of the commands you can use in the game.
 * avoid: You prepare to avoid the next enemy attack. (Only usable while in combat)
 
 ## Map
-Link to the map [here](https://github.com/Nyghor/Hidden-Pyramid/wiki/Map).
+Link to the map [here](https://github.com/Guriva/Hidden-Pyramid/wiki/Map).
 
 ## Need Help?
-[Here](https://github.com/Nyghor/Hidden-Pyramid/wiki/Guide) you can find a guide of the game.
+[Here](https://github.com/Guriva/Hidden-Pyramid/wiki/Guide) you can find a guide of the game.
 
 ## Link to github
-[Here](https://github.com/Nyghor/Hidden-Pyramid).
+[Here](https://github.com/Guriva/Hidden-Pyramid).
 
 ## License
 
